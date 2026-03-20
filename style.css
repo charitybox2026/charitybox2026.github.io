@@ -1,0 +1,4900 @@
+/* style.css */
+:root {
+    /* 主题配色：奶油黄、淡粉色、橙色 */
+    --color-cream: #FFF5D1;
+    --color-pink: #FFD1DC;
+    --color-orange: #FFA07A;
+    --color-text: #1a1a1a;
+    /* 接近纯黑的深色，保证像素边框质感 */
+    --color-accent: #FF5A5F;
+    --color-red: #ff5e00;
+    --color-green: #38a169;
+
+    /* 字体定义 */
+    --font-pixel-en: 'Press Start 2P', monospace;
+    --font-pixel-zh: 'Fusion Pixel 12px Proportional zh_hans', 'SimSun', '宋体', monospace;
+
+    /* 响应式海报缩放 (默认值) */
+    --poster-scale: 0.7;
+    --poster-margin: -100px;
+}
+
+/* 高度响应式：根据屏幕高度动态调整海报比例 */
+@media (max-height: 900px) {
+    :root {
+        --poster-scale: 0.65;
+        --poster-margin: -120px;
+    }
+}
+
+@media (max-height: 800px) {
+    :root {
+        --poster-scale: 0.6;
+        --poster-margin: -140px;
+    }
+}
+
+@media (max-height: 700px) {
+    :root {
+        --poster-scale: 0.55;
+        --poster-margin: -160px;
+    }
+}
+
+@media (max-height: 600px) {
+    :root {
+        --poster-scale: 0.45;
+        --poster-margin: -200px;
+    }
+}
+
+/* 针对 PC 宽屏的布局优化：模拟手机比例容器 */
+@media (min-width: 1024px) {
+    .swiper {
+        max-width: 430px !important;
+        margin: 0 auto !important;
+        box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+    }
+
+    .global-logo-header {
+        max-width: 430px;
+        left: 50% !important;
+        transform: translateX(-50%);
+        right: auto !important;
+    }
+
+    .org-logos {
+        width: 240px !important;
+        /* 保持与移动端类似的视觉占比 */
+    }
+}
+
+/* 针对小屏手机的 Logo 适配 */
+@media (max-width: 360px) {
+    .org-logos {
+        width: 200px !important;
+    }
+
+    .global-logo-header {
+        height: 45px !important;
+    }
+}
+
+/* 全局固定 Logo 页眉 */
+.global-logo-header {
+    position: fixed;
+    top: 5px;
+    /* Reduced from 20px */
+    left: 10px;
+    right: 10px;
+    height: 60px;
+    /* Reduced from 100px */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.org-logos {
+    height: 100%;
+    width: 270px;
+    /* Reduced from 450px (40% reduction) */
+    background: url('assets/org-logos.png') no-repeat center top;
+    background-size: 100% auto;
+    pointer-events: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* 防止移动端原生滚动冲突 */
+    font-family: var(--font-pixel-zh);
+    color: var(--color-text);
+    background-color: var(--color-cream);
+    /* 禁用页面双击缩放和长按选中 */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+h1,
+h2,
+h3,
+p,
+div {
+    font-family: var(--font-pixel-zh);
+}
+
+.pixel-en {
+    font-family: var(--font-pixel-en) !important;
+}
+
+/* === 加载页 === */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-cream);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out;
+}
+
+.pixel-loader {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 简单的像素爱心 (CSS clip-path) */
+.pixel-heart {
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-accent);
+    margin-bottom: 20px;
+    clip-path: polygon(10% 0, 30% 0, 50% 20%, 70% 0, 90% 0, 100% 20%, 100% 40%, 50% 100%, 0 40%, 0 20%);
+    animation: heartbeat 1s infinite alternate step-end;
+}
+
+.pixel-loader p {
+    font-family: var(--font-pixel-en);
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--color-text);
+    animation: blink 1s infinite;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* === Swiper 容器 === */
+.swiper {
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+/* === Swiper 进度条 (Pagination) 样式 === */
+.swiper-pagination-bullet {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 0 !important;
+    /* 正方形像素感 */
+    background: var(--color-accent) !important;
+    opacity: 0.4 !important;
+    border: 1px solid #000;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1 !important;
+    background: var(--color-accent) !important;
+    transform: scale(1.2);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.swiper-pagination-vertical.swiper-pagination-bullets {
+    right: 15px !important;
+}
+
+/* 仅允许交互元素触发点击 */
+.floating-card,
+.pixel-box,
+.modal-close-btn,
+button,
+a,
+.pixel-link {
+    pointer-events: auto !important;
+}
+
+.pixel-link {
+    color: #FF9500 !important;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-underline-offset: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pixel-link:hover {
+    color: #1a1a1a !important;
+    background-color: #FF9500;
+}
+
+/* 背景色设置 */
+/* === 极繁主义大背景 (Sunburst, Grid) === */
+
+/* 放射状太阳光芒背景 (橙色) */
+.slide-bg-burst-orange {
+    background-color: #FF5A50;
+    background-image: repeating-conic-gradient(#FF705E 0 15deg,
+            #FF5A50 15deg 30deg);
+}
+
+/* 放射状太阳光芒背景 (蓝色) */
+.slide-bg-burst-blue {
+    background-color: #3B9DFF;
+    background-image: repeating-conic-gradient(#5CB8FF 0 15deg,
+            #3B9DFF 15deg 30deg);
+}
+
+/* 蓝底方格纸背景 (类似马里奥选关界面) */
+.slide-bg-grid-blue {
+    background-color: #4AA5FF;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+
+/* 橙底虚线点阵背景 */
+.slide-bg-dots-orange {
+    background-color: #FF7B54;
+    background-image: radial-gradient(#FF9B7A 3px, transparent 3px);
+    background-size: 20px 20px;
+}
+
+/* 黄底虚线点阵背景 (Module 5) */
+.slide-bg-dots-yellow {
+    background-color: #FCD34D;
+    background-image: radial-gradient(#FDE68A 3px, transparent 3px);
+    background-size: 20px 20px;
+}
+
+/* 粉底方格纸背景 (Module 6) */
+.slide-bg-grid-pink {
+    background-color: #F9A8D4;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.4) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.4) 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+
+/* 保持旧基础以防覆盖漏掉 */
+.slide-bg-cream {
+    background-color: var(--color-cream);
+}
+
+.slide-bg-pink {
+    background-color: var(--color-pink);
+}
+
+.slide-bg-orange {
+    background-color: var(--color-orange);
+}
+
+/* === 模块内容样式 & 入场动效 === */
+.content {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    /* 像素边框装饰（可选） */
+    border: 4px solid var(--color-text);
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 4px 4px 0px var(--color-text);
+}
+
+/* 模块3：影响力模块的内容区域使用半透明蒙版，去掉默认像素边框 */
+.impact-visualization-module {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.content h1,
+.content h2 {
+    font-size: 19px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.content p {
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* 初始隐藏状态：向下偏移且透明度为 0 (Slide-up + Fade-in) */
+.content.hidden {
+    opacity: 0;
+    /* 大部分内容块使用 left: 50% 和 translateX(-50%) 居中 */
+    transform: translate(-50%, 40px);
+}
+
+/* 模块 2 特殊处理：水平垂直居中 */
+.content.hidden.narrative-data-module {
+    transform: translate(-50%, calc(-50% + 40px));
+}
+
+/* 激活状态：透明度恢复，位置恢复 */
+.content.active {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 模块 2 激活状态 */
+.content.active.narrative-data-module {
+    transform: translate(-50%, -50%);
+}
+
+/* 滑动提示动画 (箭头) */
+.scroll-hint {
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: floatUp 1.5s infinite;
+    opacity: 0.8;
+    color: var(--color-text);
+    z-index: 20;
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--color-text);
+    margin-bottom: 5px;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translate(-50%, -10px);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0.8;
+    }
+}
+
+/* === 数据模块 === */
+.data-module {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+    /* 确保在像素小人上方 */
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    border: 3px solid var(--color-text);
+    box-shadow: 3px 3px 0px var(--color-text);
+    width: 100%;
+}
+
+.pixel-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    /* 保持像素风格不模糊 */
+}
+
+/* 简单的 CSS 像素画绘制图标：日历 */
+.icon-calendar {
+    background-color: #fff;
+    border: 3px solid var(--color-text);
+    position: relative;
+    box-shadow: 2px 2px 0 var(--color-text);
+}
+
+.icon-calendar::before {
+    /* 日历上面的打孔环 */
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 6px;
+    width: 4px;
+    height: 8px;
+    background: var(--color-text);
+    box-shadow: 16px 0 0 var(--color-text);
+}
+
+.icon-calendar::after {
+    /* 日历红头 */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: var(--color-accent);
+    border-bottom: 3px solid var(--color-text);
+}
+
+/* 简单的 CSS 像素画绘制图标：金币 */
+.icon-coin {
+    background-color: #FFD700;
+    border: 3px solid var(--color-text);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 2px 2px 0 #DAA520, 2px 2px 0 var(--color-text);
+}
+
+.icon-coin::after {
+    /* 金币中间的方块 */
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border: 3px solid var(--color-text);
+}
+
+.data-info {
+    text-align: left;
+    flex: 1;
+}
+
+.data-info p:first-child {
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: var(--color-text);
+}
+
+.data-number {
+    font-size: 19px;
+    color: var(--color-accent);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+
+/* --- 聚集的超高保真像素人群背景 (高精度匹配参考图) --- */
+.pixel-crowd {
+    position: absolute;
+    bottom: 25%;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 基础架构 */
+.person.v3 {
+    position: absolute;
+    width: 44px;
+    height: 64px;
+    transform-origin: bottom center;
+}
+
+.v3 .p-head {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    width: 28px;
+    height: 26px;
+    background-color: #FCE0C5;
+    z-index: 4;
+}
+
+.v3 .p-eye-l,
+.v3 .p-eye-r {
+    position: absolute;
+    top: 10px;
+    width: 4px;
+    height: 8px;
+    background-color: #1a1a1a;
+}
+
+.v3 .p-eye-l {
+    left: 4px;
+}
+
+.v3 .p-eye-r {
+    right: 6px;
+}
+
+.v3 .p-mouth {
+    position: absolute;
+    opacity: 0;
+    /* 特定配置中显示 */
+}
+
+/* 身体 */
+.v3 .p-body {
+    position: absolute;
+    top: 30px;
+    left: 8px;
+    width: 28px;
+    height: 18px;
+    background-color: #3b82f6;
+    z-index: 3;
+}
+
+/* 手臂 */
+.v3 .p-arm-l,
+.v3 .p-arm-r {
+    position: absolute;
+    top: 30px;
+    width: 8px;
+    height: 18px;
+    background-color: #FCE0C5;
+    /* 胳膊肤色 */
+    z-index: 2;
+}
+
+/* 短袖边缘利用阴影完成 */
+.v3 .p-arm-l {
+    left: 0px;
+    box-shadow: inset 0 8px 0 #3b82f6;
+}
+
+.v3 .p-arm-r {
+    right: 0px;
+    box-shadow: inset 0 8px 0 #3b82f6;
+}
+
+/* 腿部 */
+.v3 .p-leg-l,
+.v3 .p-leg-r {
+    position: absolute;
+    top: 46px;
+    /* 30+18-2 overlay */
+    width: 8px;
+    height: 16px;
+    background-color: #1f2937;
+    z-index: 1;
+}
+
+.v3 .p-leg-l {
+    left: 12px;
+}
+
+.v3 .p-leg-r {
+    right: 8px;
+}
+
+/* 鞋子 */
+.v3 .p-leg-l::after,
+.v3 .p-leg-r::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: -2px;
+    width: 12px;
+    height: 4px;
+    background-color: #4b5563;
+}
+
+/* === 5款基础人物皮肤设计 === */
+
+/* C1: 男孩褐发蓝衣 */
+.c1 .p-hair {
+    position: absolute;
+    top: -6px;
+    left: -2px;
+    width: 32px;
+    height: 12px;
+    background: #3e2723;
+}
+
+.c1 .p-hair::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 4px;
+    width: 8px;
+    height: 4px;
+    background: #3e2723;
+    box-shadow: -10px 0 0 #3e2723;
+}
+
+.c1 .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 0px;
+    width: 4px;
+    height: 10px;
+    background: #3e2723;
+    box-shadow: 28px 0 0 #3e2723;
+}
+
+.c1 .p-body {
+    background: #3b82f6;
+}
+
+.c1 .p-arm-l,
+.c1 .p-arm-r {
+    box-shadow: inset 0 8px 0 #3b82f6;
+}
+
+/* C2: 女孩橙头束发绿衣 */
+.c2 .p-hair {
+    position: absolute;
+    top: -4px;
+    left: -2px;
+    width: 32px;
+    height: 12px;
+    background: #f59e0b;
+}
+
+.c2 .p-hair::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: -4px;
+    width: 6px;
+    height: 10px;
+    background: #f59e0b;
+}
+
+.c2 .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: -4px;
+    width: 10px;
+    height: 14px;
+    background: #f59e0b;
+}
+
+.c2 .p-body {
+    background: #10b981;
+}
+
+.c2 .p-arm-l,
+.c2 .p-arm-r {
+    box-shadow: inset 0 6px 0 #10b981;
+}
+
+.c2 .p-leg-l,
+.c2 .p-leg-r {
+    background: #1f2937;
+    box-shadow: inset 0 -6px 0 #FCE0C5;
+}
+
+/* 裤衩+露腿 */
+
+/* C3: 女孩长发紫衣 */
+.c3 .p-hair {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 28px;
+    height: 12px;
+    background: #2d1015;
+}
+
+.c3 .p-hair::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 8px;
+    width: 16px;
+    height: 4px;
+    background: #2d1015;
+}
+
+.c3 .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -6px;
+    width: 12px;
+    height: 26px;
+    background: #2d1015;
+    z-index: -1;
+}
+
+.c3 .p-body {
+    background: #a855f7;
+}
+
+.c3 .p-arm-l,
+.c3 .p-arm-r {
+    box-shadow: inset 0 14px 0 #a855f7;
+}
+
+/* C4: 女孩金发粉衣绿裙 */
+.c4 .p-hair {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 36px;
+    height: 14px;
+    background: #eab308;
+}
+
+.c4 .p-hair::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -2px;
+    width: 8px;
+    height: 14px;
+    background: #eab308;
+}
+
+.c4 .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: -2px;
+    width: 8px;
+    height: 14px;
+    background: #eab308;
+}
+
+.c4 .p-mouth {
+    opacity: 1;
+    background-color: #fff;
+    width: 12px;
+    height: 6px;
+    top: 18px;
+    left: 8px;
+    border-radius: 0 0 4px 4px;
+}
+
+.c4 .p-body {
+    background: #ef4444;
+    height: 16px;
+    top: 32px;
+}
+
+.c4 .p-arm-l,
+.c4 .p-arm-r {
+    box-shadow: inset 0 6px 0 #ef4444;
+    top: 32px;
+}
+
+.c4 .p-body::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 0;
+    width: 28px;
+    height: 12px;
+    background: #10b981;
+}
+
+/* 裙子 */
+.c4 .p-leg-l,
+.c4 .p-leg-r {
+    background: #FCE0C5;
+    box-shadow: none;
+    top: 48px;
+}
+
+/* C5: 男孩头带青衣 */
+.c5 .p-hair {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 28px;
+    height: 10px;
+    background: #4a1c22;
+    box-shadow: inset 0 -4px 0 #14b8a6;
+}
+
+/* 头带 */
+.c5 .p-hair::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    width: 4px;
+    height: 6px;
+    background: #4a1c22;
+}
+
+.c5 .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -4px;
+    width: 6px;
+    height: 16px;
+    background: #4a1c22;
+}
+
+.c5 .p-body {
+    background: #06b6d4;
+}
+
+.c5 .p-arm-l,
+.c5 .p-arm-r {
+    box-shadow: none;
+}
+
+.c5 .p-leg-l,
+.c5 .p-leg-r {
+    background: #1f2937;
+    box-shadow: inset 0 -6px 0 #FCE0C5;
+}
+
+/* 换色系生成另外7个人 */
+.c6.c1 .p-body {
+    background: #f97316;
+}
+
+.c6.c1 .p-arm-l,
+.c6.c1 .p-arm-r {
+    box-shadow: inset 0 8px 0 #f97316;
+}
+
+.c7.c2 .p-body {
+    background: #ec4899;
+}
+
+.c7.c2 .p-arm-l,
+.c7.c2 .p-arm-r {
+    box-shadow: inset 0 6px 0 #ec4899;
+}
+
+.c8.c3 .p-body {
+    background: #14b8a6;
+}
+
+.c8.c3 .p-arm-l,
+.c8.c3 .p-arm-r {
+    box-shadow: inset 0 14px 0 #14b8a6;
+}
+
+.c9.c4 .p-body {
+    background: #3b82f6;
+}
+
+.c9.c4 .p-arm-l,
+.c9.c4 .p-arm-r {
+    box-shadow: inset 0 6px 0 #3b82f6;
+}
+
+.c9.c4 .p-body::after {
+    background: #f59e0b;
+}
+
+.c10.c5 .p-body {
+    background: #f43f5e;
+}
+
+.c10.c5 .p-hair {
+    box-shadow: inset 0 -4px 0 #f59e0b;
+}
+
+.c11.c1 .p-body {
+    background: #84cc16;
+}
+
+.c11.c1 .p-arm-l,
+.c11.c1 .p-arm-r {
+    box-shadow: inset 0 8px 0 #84cc16;
+}
+
+.c12.c2 .p-body {
+    background: #6366f1;
+}
+
+.c12.c2 .p-arm-l,
+.c12.c2 .p-arm-r {
+    box-shadow: inset 0 6px 0 #6366f1;
+}
+
+/* 位置、层级、缩放和动画控制 */
+.crowd-member {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.z2 {
+    z-index: 2;
+    --s: 0.6;
+}
+
+.z3 {
+    z-index: 3;
+    --s: 0.7;
+}
+
+.z4 {
+    z-index: 4;
+    --s: 0.8;
+}
+
+.z5 {
+    z-index: 5;
+    --s: 0.9;
+}
+
+.z6 {
+    z-index: 6;
+    --s: 1.0;
+}
+
+.z7 {
+    z-index: 7;
+    --s: 1.1;
+}
+
+/* 12 个人的水平分布与垂直交错 */
+.p1 {
+    left: -2%;
+    bottom: -5px;
+}
+
+.p2 {
+    left: 8%;
+    bottom: 15px;
+}
+
+.p3 {
+    left: 16%;
+    bottom: 5px;
+}
+
+.p4 {
+    left: 24%;
+    bottom: 20px;
+}
+
+.p5 {
+    left: 33%;
+    bottom: -8px;
+}
+
+.p6 {
+    left: 42%;
+    bottom: 12px;
+}
+
+.p7 {
+    left: 51%;
+    bottom: 25px;
+}
+
+.p8 {
+    left: 60%;
+    bottom: -5px;
+}
+
+.p9 {
+    left: 69%;
+    bottom: 15px;
+}
+
+.p10 {
+    left: 78%;
+    bottom: 5px;
+}
+
+.p11 {
+    left: 86%;
+    bottom: 20px;
+}
+
+.p12 {
+    left: 88%;
+    bottom: -10px;
+}
+
+/* 动画赋予和延迟 */
+.swiper-slide-active .crowd-member {
+    animation:
+        popGather 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+        breathe 2.0s ease-in-out infinite alternate forwards;
+}
+
+.swiper-slide-active .p1 {
+    animation-delay: 0.3s, 0.8s;
+}
+
+.swiper-slide-active .p2 {
+    animation-delay: 0.7s, 1.2s;
+}
+
+.swiper-slide-active .p3 {
+    animation-delay: 0.5s, 1.0s;
+}
+
+.swiper-slide-active .p4 {
+    animation-delay: 0.9s, 1.4s;
+}
+
+.swiper-slide-active .p5 {
+    animation-delay: 0.2s, 0.7s;
+}
+
+.swiper-slide-active .p6 {
+    animation-delay: 0.6s, 1.1s;
+}
+
+.swiper-slide-active .p7 {
+    animation-delay: 1.0s, 1.5s;
+}
+
+.swiper-slide-active .p8 {
+    animation-delay: 0.4s, 0.9s;
+}
+
+.swiper-slide-active .p9 {
+    animation-delay: 0.8s, 1.3s;
+}
+
+.swiper-slide-active .p10 {
+    animation-delay: 0.3s, 0.8s;
+}
+
+.swiper-slide-active .p11 {
+    animation-delay: 0.7s, 1.2s;
+}
+
+.swiper-slide-active .p12 {
+    animation-delay: 0.5s, 1.0s;
+}
+
+@keyframes popGather {
+    0% {
+        transform: scale(0) translateY(30px);
+        opacity: 0;
+    }
+
+    90% {
+        transform: scale(calc(var(--s) + 0.1)) translateY(-5px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(var(--s)) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes breathe {
+    0% {
+        transform: scale(var(--s)) translateY(0);
+    }
+
+    100% {
+        transform: scale(var(--s)) translateY(-2px);
+    }
+}
+
+/* === 影响力可视化 === */
+.planting-scene {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: none;
+    z-index: 2;
+    /* 高于地面砖块(z-index:1)，树木和人物显示在前 */
+}
+
+.pixel-brick-floor {
+    pointer-events: none;
+    /* 穿透 */
+}
+
+/* 简单的土地基 */
+.planting-scene::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 10px;
+    background: #654321;
+    border-radius: 5px;
+    z-index: 0;
+}
+
+/* --- 无边框大色块像素小真人 (参考第二套图片风格) --- */
+.person-hi-res {
+    position: absolute;
+    bottom: 10px;
+    width: 44px;
+    height: 70px;
+    z-index: 3;
+}
+
+.person-boy {
+    left: 15px;
+}
+
+.person-girl {
+    right: 15px;
+    transform: scaleX(-1);
+}
+
+/* 头部：大方块肤色，无边框 */
+.p-head {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 32px;
+    height: 28px;
+    background-color: #F8D8C0;
+    /* 较白的肤色 */
+    z-index: 4;
+}
+
+/* 眼睛：方块黑点 */
+.p-eye-l,
+.p-eye-r {
+    position: absolute;
+    top: 14px;
+    width: 4px;
+    height: 4px;
+    background-color: #1a202c;
+}
+
+.p-eye-l {
+    left: 6px;
+}
+
+.p-eye-r {
+    right: 12px;
+}
+
+/* 眼睛间距 */
+
+/* 嘴巴：白色大方块笑脸 */
+.p-mouth {
+    position: absolute;
+    top: 20px;
+    left: 8px;
+    width: 14px;
+    height: 4px;
+    background-color: #ffffff;
+}
+
+/* 女孩嘴巴稍微小点，加点腮红 */
+.person-girl .p-mouth {
+    width: 10px;
+    left: 10px;
+}
+
+.person-girl .p-blush-l,
+.person-girl .p-blush-r {
+    position: absolute;
+    top: 18px;
+    width: 4px;
+    height: 4px;
+    background-color: #fca5a5;
+}
+
+.person-girl .p-blush-l {
+    left: 2px;
+}
+
+.person-girl .p-blush-r {
+    right: 6px;
+}
+
+/* 头发：块状堆叠感 */
+.p-hair {
+    position: absolute;
+    top: -8px;
+    left: -2px;
+    width: 36px;
+    height: 14px;
+    background-color: #6B4E31;
+    /* 棕色大背头/平头 */
+}
+
+/* 头顶突出的方块毛 */
+.person-boy .p-hair::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 6px;
+    width: 10px;
+    height: 4px;
+    background-color: #6B4E31;
+}
+
+/* 鬓角 */
+.person-boy .p-hair::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 0;
+    width: 6px;
+    height: 10px;
+    background-color: #6B4E31;
+}
+
+/* 脖子 */
+.p-neck {
+    position: absolute;
+    top: 34px;
+    left: 18px;
+    width: 8px;
+    height: 4px;
+    background-color: #F8D8C0;
+    z-index: 3;
+}
+
+/* 身体 */
+.p-body {
+    position: absolute;
+    top: 38px;
+    left: 10px;
+    width: 24px;
+    height: 20px;
+    background-color: #10B981;
+    /* 翠绿色，与蓝色形成对比 */
+    z-index: 3;
+}
+
+.person-girl .p-body {
+    background-color: #FACC15;
+}
+
+/* 黄色上衣 */
+
+/* 手臂与烤菜逻辑 */
+.p-arm {
+    position: absolute;
+    top: 42px;
+    right: -6px;
+    width: 14px;
+    height: 6px;
+    background-color: #F8D8C0;
+    z-index: 5;
+    transform-origin: left center;
+}
+
+.roasting-stick {
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    width: 35px;
+    height: 3px;
+    background-color: #634731;
+    /* 木头色 */
+    transform: rotate(-15deg);
+}
+
+.roasting-veg {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #FFA500;
+    /* 橙色蔬菜 */
+    border: 2px solid #1a1a1a;
+}
+
+/* 后排角色的手势稍微不同 */
+.participants>div:nth-child(n+3) .roasting-stick {
+    transform: rotate(10deg);
+}
+
+/* 腿部 */
+.p-leg-l,
+.p-leg-r {
+    position: absolute;
+    top: 58px;
+    width: 8px;
+    height: 12px;
+    background-color: #1a202c;
+    z-index: 2;
+}
+
+.p-leg-l {
+    left: 10px;
+}
+
+.p-leg-r {
+    right: 10px;
+}
+
+/* === 演讲者 (Speaker) 特殊样式与动画 === */
+@keyframes speaking-gesture {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(-45deg);
+    }
+}
+
+@keyframes speaking-mouth {
+
+    0%,
+    100% {
+        height: 4px;
+        border-radius: 0;
+    }
+
+    50% {
+        height: 6px;
+        border-radius: 2px;
+    }
+}
+
+.person-speaker .p-arm {
+    animation: speaking-gesture 1.2s infinite ease-in-out;
+    transform-origin: left top;
+}
+
+.person-speaker .p-mouth {
+    animation: speaking-mouth 0.3s infinite alternate steps(2);
+}
+
+/* 演讲者服装：深蓝色西装 */
+.person-speaker .p-body {
+    background-color: #1E3A8A !important;
+}
+
+/* 演讲者发色：银灰色 (资深感) */
+.person-speaker .p-hair,
+.person-speaker .p-hair::before,
+.person-speaker .p-hair::after {
+    background-color: #94A3B8 !important;
+}
+
+/* 演讲者领带 (小细节) */
+.person-speaker .p-body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 4px;
+    height: 10px;
+    background-color: #EF4444;
+    /* 红色领带 */
+}
+
+/* 篝火 CSS 实现 (真正的像素大团火焰) */
+.pixel-bonfire-container {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    margin-bottom: 24px;
+    z-index: 20 !important;
+}
+
+/* 木柴堆 (更像一堆，更有厚度) */
+.bonfire-logs {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 40px;
+}
+
+.bonfire-log {
+    position: absolute;
+    background: #5d4037;
+    width: 60px;
+    height: 14px;
+    border: 3px solid #1a1a1a;
+    border-radius: 2px;
+}
+
+.bonfire-log-1 {
+    transform: rotate(-25deg);
+    left: 0;
+    bottom: 8px;
+    z-index: 2;
+}
+
+.bonfire-log-2 {
+    transform: rotate(25deg);
+    right: 0;
+    bottom: 8px;
+    z-index: 2;
+}
+
+.bonfire-log-3 {
+    width: 70px;
+    left: 15px;
+    bottom: 0px;
+    z-index: 1;
+    background: #3e2723;
+}
+
+/* 像素火焰 (层叠式的像素块) */
+.bonfire-flames {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 120px;
+}
+
+.flame-blob {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    image-rendering: pixelated;
+    animation: pixel-flicker var(--d) infinite steps(4);
+    transform-origin: bottom center;
+}
+
+/* 大火团 - 红色基底 */
+.flame-red {
+    width: 80px;
+    height: 100px;
+    background: #FF4400;
+    clip-path: polygon(20% 100%, 80% 100%, 100% 80%, 100% 40%, 80% 0%, 50% 20%, 20% 0%, 0% 40%, 0% 80%);
+    --d: 0.8s;
+    z-index: 10;
+}
+
+/* 中火团 - 橙色核心 */
+.flame-orange {
+    width: 60px;
+    height: 80px;
+    background: #FF9900;
+    clip-path: polygon(25% 100%, 75% 100%, 100% 75%, 100% 45%, 75% 15%, 50% 30%, 25% 15%, 0% 45%, 0% 75%);
+    --d: 0.6s;
+    z-index: 11;
+    margin-bottom: 5px;
+}
+
+/* 小火团 - 黄色尖端 */
+.flame-yellow {
+    width: 35px;
+    height: 50px;
+    background: #FFFF00;
+    clip-path: polygon(30% 100%, 70% 100%, 100% 70%, 100% 40%, 50% 0%, 0% 40%, 0% 70%);
+    --d: 0.4s;
+    z-index: 12;
+    margin-bottom: 10px;
+}
+
+/* 模块 5：研究产出 样式扩展 */
+.research-module-content .res-item {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.research-module-content .res-item:hover {
+    transform: scale(1.03) translate(2px, -2px);
+}
+
+.highlight-border {
+    position: relative;
+    overflow: hidden;
+}
+
+.highlight-border::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+
+    20% {
+        left: 100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+
+/* 研究桌道具：墨水瓶 */
+.pixel-ink-bottle {
+    width: 20px;
+    height: 24px;
+    background: #1A237E;
+    /* 深蓝瓶体 */
+    position: relative;
+    border: 2px solid #000;
+}
+
+.pixel-ink-bottle::before {
+    /* 瓶口 */
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 4px;
+    width: 8px;
+    height: 4px;
+    background: #283593;
+    border: 2px solid #000;
+}
+
+.pixel-ink-bottle::after {
+    /* 瓶身反光 */
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 4px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 研究桌道具：书籍堆叠 */
+.pixel-books-stack {
+    width: 60px;
+    height: 40px;
+    position: relative;
+}
+
+.pixel-books-stack::before {
+    /* 底层的厚书 */
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 12px;
+    background: #C62828;
+    /* 红皮书 */
+    border: 2px solid #000;
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.pixel-books-stack::after {
+    /* 中间的书 */
+    content: "";
+    position: absolute;
+    bottom: 12px;
+    left: 10px;
+    width: 45px;
+    height: 10px;
+    background: #2E7D32;
+    /* 绿皮书 */
+    border: 2px solid #000;
+}
+
+.pixel-books-stack::before {
+    z-index: 1;
+}
+
+/* 顶层小书 */
+.pixel-books-stack {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.pixel-books-stack::after {
+    z-index: 2;
+}
+
+/* 重新实现精细的堆叠 */
+.pixel-books-stack {
+    height: 40px;
+    width: 60px;
+}
+
+.pixel-books-stack::before,
+.pixel-books-stack::after {
+    display: none;
+}
+
+/* 清除之前的占位 */
+
+.pixel-books-stack {
+    background: transparent;
+}
+
+/* 这里用内联或者复杂选择器在 HTML 增加更多细节也可以，但我们尽量在 CSS 搞定 */
+/* 修正后的堆叠方式：使用 background 渐变模拟多本书 */
+.pixel-books-stack {
+    background:
+        linear-gradient(to top, #000 2px, #1565C0 2px, #1565C0 12px, #000 12px, #000 14px, #2E7D32 14px, #2E7D32 24px, #000 24px, #000 26px, #C62828 26px, #C62828 36px, #000 36px) bottom left/55px 100% no-repeat;
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.3));
+}
+
+.person-girl .p-hair {
+    background-color: #4A3A31;
+    /* 深棕 */
+    height: 16px;
+    width: 36px;
+}
+
+.person-girl .p-hair::after {
+    /* 长发垂下 */
+    content: "";
+    position: absolute;
+    top: 16px;
+    right: -2px;
+    width: 12px;
+    height: 24px;
+    background-color: #4A3A31;
+}
+
+/* 模块 6：看见与发声 场景元素 */
+
+/* 像素讲台 (Pixel Podium) */
+.pixel-podium {
+    width: 120px;
+    height: 80px;
+    background: #795548;
+    /* 深棕 */
+    border: 4px solid #1a1a1a;
+    border-bottom: 8px solid #3E2723;
+    position: relative;
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+    z-index: 5;
+}
+
+.pixel-podium::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 30px;
+    background: #A1887F;
+    border: 2px solid #1a1a1a;
+}
+
+/* 像素麦克风 (Pixel Microphone) */
+.pixel-mic {
+    width: 8px;
+    height: 40px;
+    background: #000;
+    position: absolute;
+    top: -44px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pixel-mic::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: -4px;
+    width: 16px;
+    height: 16px;
+    background: #757575;
+    border: 3px solid #000;
+    border-radius: 4px;
+}
+
+/* 像素报纸 (Pixel Newspaper) - 悬浮动效 */
+.pixel-newspaper {
+    width: 70px;
+    height: 90px;
+    background: #E0E0E0;
+    border: 3px solid #1a1a1a;
+    position: relative;
+    transform: rotate(10deg);
+    z-index: 6;
+}
+
+.pixel-newspaper::before {
+    content: "NEWS";
+    font-family: inherit;
+    font-size: 10px;
+    color: #1a1a1a;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-weight: bold;
+}
+
+.pixel-newspaper::after {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    background: repeating-linear-gradient(to bottom, #757575, #757575 2px, transparent 2px, transparent 6px);
+}
+
+/* 喇叭容器调整 */
+.pixel-megaphone-container {
+    position: relative;
+    width: 80px;
+    height: 60px;
+    z-index: 6;
+}
+
+/* 声波动画 */
+.sound-waves {
+    position: absolute;
+    left: 45px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.wave {
+    position: absolute;
+    border-right: 4px solid #1a1a1a;
+    border-radius: 50%;
+    opacity: 0;
+    animation: waveAnim 1.5s infinite;
+}
+
+.wave.w1 {
+    width: 15px;
+    height: 15px;
+    top: 12px;
+    left: 0;
+    animation-delay: 0s;
+}
+
+.wave.w2 {
+    width: 25px;
+    height: 25px;
+    top: 7px;
+    left: 5px;
+    animation-delay: 0.5s;
+}
+
+.wave.w3 {
+    width: 35px;
+    height: 35px;
+    top: 2px;
+    left: 10px;
+    animation-delay: 1s;
+}
+
+@keyframes waveAnim {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* 脖子 */
+.p-neck {
+    position: absolute;
+    top: 34px;
+    left: 14px;
+    width: 12px;
+    height: 6px;
+    background-color: #E8C8B0;
+    /* 脖子阴影色 */
+    z-index: 2;
+}
+
+/* 身体 (T恤) */
+.p-body {
+    position: absolute;
+    top: 40px;
+    left: 8px;
+    width: 24px;
+    height: 18px;
+    z-index: 3;
+}
+
+.person-boy .p-body {
+    background-color: #B27C7C;
+    /* 豆沙红T恤 */
+}
+
+.person-girl .p-body {
+    background-color: #79A3B1;
+    /* 灰蓝T恤 */
+}
+
+/* 手臂 */
+.p-arm {
+    position: absolute;
+    top: 40px;
+    left: 2px;
+    width: 10px;
+    height: 18px;
+    background-color: #F8D8C0;
+    /* 肤色手臂 */
+    z-index: 5;
+    transform-origin: top center;
+}
+
+/* 短袖边缘 */
+.p-arm::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 6px;
+}
+
+.person-boy .p-arm::before {
+    background-color: #B27C7C;
+}
+
+.person-girl .p-arm::before {
+    background-color: #79A3B1;
+}
+
+.swiper-slide-active .p-arm {
+    animation: plant-arm-flat 0.6s infinite alternate;
+}
+
+@keyframes plant-arm-flat {
+    0% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
+/* 腿部 (裤子) */
+.p-leg-l,
+.p-leg-r {
+    position: absolute;
+    bottom: 0px;
+    width: 10px;
+    height: 12px;
+    background-color: #D3D3C1;
+    /* 米色裤子 */
+    z-index: 2;
+}
+
+.person-boy .p-leg-l {
+    left: 8px;
+}
+
+.person-boy .p-leg-r {
+    right: 12px;
+}
+
+.person-girl .p-leg-l,
+.person-girl .p-leg-r {
+    background-color: #5C6E91;
+    /* 藏青裤子 */
+}
+
+.person-girl .p-leg-l {
+    left: 8px;
+}
+
+.person-girl .p-leg-r {
+    right: 12px;
+}
+
+/* 鞋子 */
+.p-leg-l::after,
+.p-leg-r::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -2px;
+    width: 14px;
+    height: 4px;
+    background-color: #4A4A4A;
+}
+
+/* --- 森林延展动画 (主树 -> 背景森林) --- */
+.pixel-tree-container {
+    position: relative;
+    width: 40px;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    bottom: 10px;
+    z-index: 2;
+    /* 在小人和背景树之间 */
+}
+
+/* 主树小树苗 state */
+.pixel-sprout {
+    position: absolute;
+    bottom: 0;
+    width: 6px;
+    height: 0px;
+    background: #32CD32;
+    transform-origin: bottom;
+}
+
+.pixel-sprout::before,
+.pixel-sprout::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    background: #32CD32;
+    opacity: 0;
+}
+
+.pixel-sprout::before {
+    top: 2px;
+    right: 100%;
+    border-radius: 3px 0 0 3px;
+}
+
+.pixel-sprout::after {
+    top: 8px;
+    left: 100%;
+    border-radius: 0 3px 3px 0;
+}
+
+/* 主树大树 state */
+.pixel-tree {
+    width: 24px;
+    height: 0px;
+    background-color: #8B4513;
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+}
+
+.pixel-tree::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0px;
+    height: 0px;
+    background-color: #32CD32;
+    box-shadow: inset -10px -10px 0 rgba(0, 0, 0, 0.1),
+        0 0 0 4px #1a1a1a;
+    border-radius: 4px;
+    opacity: 0;
+}
+
+/* 背景树林 (5棵稍微小一点的树) */
+.forest-bg {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    height: 160px;
+    z-index: 1;
+    /* 在主树和人后面 */
+    opacity: 0.8;
+    /* 稍微透明一点增加层次感 */
+}
+
+.bg-tree {
+    position: absolute;
+    bottom: 0;
+    width: 16px;
+    height: 0px;
+    background-color: #6b3e1b;
+    border: 3px solid #1a1a1a;
+    border-bottom: none;
+    opacity: 0;
+}
+
+.bg-tree::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0px;
+    height: 0px;
+    background-color: #22c55e;
+    border: 3px solid #1a1a1a;
+    border-radius: 4px;
+    opacity: 0;
+}
+
+/* 定位背景树 */
+.t1 {
+    left: -10px;
+}
+
+.t2 {
+    left: 45px;
+}
+
+.t3 {
+    right: -10px;
+}
+
+.t4 {
+    right: 55px;
+}
+
+.t5 {
+    left: 95px;
+}
+
+/* 中间偏后 */
+
+/* ==== 生长时间轴 ==== */
+
+/* 1. 0s - 1.5s: 主树小苗破土 */
+.swiper-slide-active .pixel-sprout {
+    animation: grow-sprout 1.5s ease-out 0.5s forwards;
+}
+
+.swiper-slide-active .pixel-sprout::before,
+.swiper-slide-active .pixel-sprout::after {
+    animation: sprout-leaves 0.5s ease-out 1.2s forwards;
+}
+
+/* 2. 1.5s - 2.5s: 主树干长高 */
+.swiper-slide-active .pixel-tree {
+    animation: grow-trunk 1s ease-out 2s forwards;
+}
+
+/* 3. 2.5s - 3.2s: 主树冠繁盛 */
+.swiper-slide-active .pixel-tree::after {
+    animation: grow-leaves-main 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.8s forwards;
+}
+
+/* 4. 3.2s - 4.5s: 森林延展 (背景树依次长出) */
+.swiper-slide-active .t1 {
+    animation: grow-bg-trunk 0.4s ease-out 3.2s forwards;
+}
+
+.swiper-slide-active .t1::after {
+    animation: grow-bg-leaves 0.5s ease-out 3.4s forwards;
+}
+
+.swiper-slide-active .t3 {
+    animation: grow-bg-trunk 0.4s ease-out 3.4s forwards;
+}
+
+.swiper-slide-active .t3::after {
+    animation: grow-bg-leaves 0.5s ease-out 3.6s forwards;
+}
+
+.swiper-slide-active .t2 {
+    animation: grow-bg-trunk 0.4s ease-out 3.7s forwards;
+}
+
+.swiper-slide-active .t2::after {
+    animation: grow-bg-leaves 0.5s ease-out 3.9s forwards;
+}
+
+.swiper-slide-active .t4 {
+    animation: grow-bg-trunk 0.4s ease-out 3.8s forwards;
+}
+
+.swiper-slide-active .t4::after {
+    animation: grow-bg-leaves 0.5s ease-out 4.0s forwards;
+}
+
+.swiper-slide-active .t5 {
+    animation: grow-bg-trunk 0.4s ease-out 4.0s forwards;
+}
+
+.swiper-slide-active .t5::after {
+    animation: grow-bg-leaves 0.5s ease-out 4.2s forwards;
+}
+
+@keyframes grow-sprout {
+    0% {
+        height: 0;
+    }
+
+    90% {
+        height: 18px;
+        opacity: 1;
+    }
+
+    100% {
+        height: 18px;
+        opacity: 0;
+    }
+}
+
+@keyframes sprout-leaves {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes grow-trunk {
+    0% {
+        height: 0;
+        opacity: 1;
+        border: none;
+    }
+
+    100% {
+        height: 80px;
+        opacity: 1;
+        border: 4px solid #1a1a1a;
+        border-bottom: none;
+    }
+}
+
+@keyframes grow-leaves-main {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        width: 140px;
+        height: 140px;
+        opacity: 1;
+    }
+}
+
+@keyframes grow-bg-trunk {
+    0% {
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        height: 60px;
+        opacity: 1;
+    }
+}
+
+@keyframes grow-bg-leaves {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        width: 80px;
+        height: 80px;
+        opacity: 1;
+    }
+}
+
+/* 漂浮卡片组件基础样式 (叶子形状) */
+.floating-cards {
+    position: relative;
+    width: 100%;
+}
+
+.floating-card {
+    background: #e6ffed;
+    /* 浅绿背景 */
+    border: 3px solid #1a1a1a;
+    /* 回归深色边框 */
+    padding: 8px 12px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    opacity: 0;
+    z-index: 5;
+    max-width: 250px;
+    /* 回归上个版本的模式：稍微方的叶子感 */
+    border-radius: 12px 2px 12px 2px;
+    position: relative;
+    pointer-events: auto;
+    /* 让卡片可以点击 */
+}
+
+/* 简化叶柄/尖尖 */
+.floating-card::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -6px;
+    width: 6px;
+    height: 3px;
+    background: #1a1a1a;
+    transform: translateY(-50%);
+}
+
+/* 移除纹路 */
+.floating-card::after {
+    display: none;
+}
+
+.floating-card .card-title {
+    font-size: 11px;
+    margin-bottom: 2px;
+    color: #333;
+    font-weight: bold;
+}
+
+.floating-card .card-num {
+    font-size: 18px;
+    color: #2f855a;
+    font-weight: bold;
+}
+
+.floating-card .card-title {
+    font-size: 11px;
+    margin-bottom: 2px;
+    color: #22543d;
+    font-weight: bold;
+}
+
+.floating-card .card-num {
+    font-size: 18px;
+    color: #2f855a;
+    font-weight: bold;
+}
+
+@keyframes card-float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(-6px) rotate(1deg);
+    }
+}
+
+/* 浇水壶样式 */
+.watering-can {
+    position: absolute;
+    right: -15px;
+    top: -5px;
+    width: 20px;
+    height: 16px;
+    z-index: 10;
+}
+
+.can-body {
+    width: 14px;
+    height: 10px;
+    background: #4A5568;
+    border: 2px solid #1a1a1a;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.can-spout {
+    width: 10px;
+    height: 4px;
+    background: #4A5568;
+    border: 2px solid #1a1a1a;
+    position: absolute;
+    right: -6px;
+    top: 2px;
+    transform: rotate(30deg);
+}
+
+/* 水滴动画 */
+.water-drops {
+    position: absolute;
+    right: -12px;
+    top: 12px;
+}
+
+.drop {
+    width: 3px;
+    height: 3px;
+    background: #4299E1;
+    position: absolute;
+    opacity: 0;
+}
+
+.drop.d1 {
+    left: 0;
+    animation: drip 1s infinite 0s;
+}
+
+.drop.d2 {
+    left: 4px;
+    animation: drip 1s infinite 0.3s;
+}
+
+.drop.d3 {
+    left: 8px;
+    animation: drip 1s infinite 0.6s;
+}
+
+@keyframes drip {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+}
+
+/* 手臂拿水壶的微动 */
+.person-boy .p-arm {
+    animation: watering-motion 2s ease-in-out infinite;
+    transform-origin: top left;
+}
+
+@keyframes watering-motion {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(15deg);
+    }
+}
+
+/* 激活后开启微浮动动效 */
+.js-seq.active.floating-card {
+    animation: card-float 2.5s ease-in-out infinite alternate !important;
+}
+
+/* === 封面模块 (模块 1) === */
+.cover-module {
+    position: relative;
+    overflow: hidden;
+}
+
+/* 像素蛋糕 */
+.pixel-cake {
+    position: relative;
+    width: 60px;
+    height: 70px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.cake-tier {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bottom-tier {
+    bottom: 0px;
+    width: 60px;
+    height: 30px;
+    z-index: 1;
+}
+
+.top-tier {
+    bottom: 27px;
+    /* 稍微嵌在底层糖霜里 */
+    width: 44px;
+    height: 25px;
+    z-index: 2;
+}
+
+.cake-base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #eab308;
+    /* 蛋糕胚黄色 */
+    border: 3px solid #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.cake-detail {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #ca8a04;
+    /* 中间夹层暗黄色 */
+    transform: translateY(-50%);
+}
+
+/* 给夹层添加红色的水果粒细节 */
+.cake-detail::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: 15%;
+    width: 3px;
+    height: 3px;
+    background-color: #ef4444;
+    /* 红色像素点 */
+    box-shadow: 15px 2px 0 #ef4444, 30px -1px 0 #ef4444, 40px 4px 0 #ef4444;
+}
+
+/* 给蛋糕胚底部添加一些纹理 */
+.cake-detail::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 10%;
+    width: 3px;
+    height: 3px;
+    background-color: #a16207;
+    /* 更深的阴影点 */
+    box-shadow: 12px -2px 0 #a16207, 24px 4px 0 #a16207, 36px 0px 0 #a16207;
+}
+
+/* 糖霜 */
+.icing {
+    position: absolute;
+    top: -4px;
+    /* 盖在胚子上 */
+    width: calc(100% + 6px);
+    left: -3px;
+    height: 16px;
+    background-color: #FFD1DC;
+    /* 粉红糖霜 */
+    border: 3px solid #1a1a1a;
+    border-radius: 8px 8px 4px 4px;
+    z-index: 3;
+}
+
+/* 糖霜滴落 */
+.icing::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 15%;
+    width: 8px;
+    height: 8px;
+    background-color: #FFD1DC;
+    border: 3px solid #1a1a1a;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 15px -3px 0 -3px #FFD1DC, 15px 0px 0 0 #1a1a1a,
+        30px -5px 0 -3px #FFD1DC, 30px -2px 0 0 #1a1a1a;
+}
+
+/* 糖霜上的彩色糖粒 */
+.sprinkles {
+    position: absolute;
+    top: 3px;
+    left: 10%;
+    width: 3px;
+    height: 3px;
+    background-color: #3B82F6;
+    /* 蓝 */
+    box-shadow: 12px 5px 0 #10B981,
+        /* 绿 */
+        24px 1px 0 #F59E0B,
+        /* 黄 */
+        36px 6px 0 #8B5CF6;
+    /* 紫 */
+    z-index: 4;
+}
+
+.top-tier .sprinkles {
+    left: 10%;
+    box-shadow: 10px 4px 0 #10B981, 20px 0px 0 #F59E0B, 30px 5px 0 #8B5CF6;
+}
+
+/* 蜡烛 */
+.candle {
+    position: absolute;
+    bottom: 50px;
+    /* 在顶层之上 */
+    width: 6px;
+    height: 16px;
+    background-color: #ffffff;
+    border: 2px solid #1a1a1a;
+    z-index: 1;
+}
+
+.candle.c1 {
+    left: 18px;
+}
+
+.candle.c2 {
+    left: 36px;
+}
+
+/* 条纹 */
+.candle::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #ef4444;
+    box-shadow: 0 8px 0 #ef4444;
+}
+
+/* 火焰 */
+.flame {
+    position: absolute;
+    top: -12px;
+    left: -2px;
+    width: 6px;
+    height: 10px;
+    background-color: #fbbf24;
+    border: 2px solid #1a1a1a;
+    border-radius: 50% 50% 20% 20%;
+    animation: flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker {
+    0% {
+        transform: scale(1) translateY(0);
+        background-color: #fbbf24;
+    }
+
+    100% {
+        transform: scale(1.2) translateY(-2px);
+        background-color: #f59e0b;
+    }
+}
+
+/* 像素烟花/礼花 */
+.fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 利用背景透明，依靠强大的 box-shadow 生成四周爆裂的像素点效果 */
+.firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+    border-radius: 2px;
+    opacity: 0;
+}
+
+/* 3朵烟花位置 */
+.f1 {
+    top: 25%;
+    left: 50%;
+}
+
+.f2 {
+    top: 35%;
+    left: 25%;
+}
+
+.f3 {
+    top: 35%;
+    left: 75%;
+}
+
+.swiper-slide-active .firework {
+    animation: explode 1.5s infinite;
+}
+
+.swiper-slide-active .f2 {
+    animation-delay: 0.5s;
+}
+
+.swiper-slide-active .f3 {
+    animation-delay: 1.0s;
+}
+
+@keyframes explode {
+    0% {
+        opacity: 1;
+        box-shadow: 0 0 0 #ef4444, 0 0 0 #3b82f6, 0 0 0 #f59e0b, 0 0 0 #10b981;
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow:
+            0 -30px 0 #ef4444,
+            /* 上 */
+            0 30px 0 #3b82f6,
+            /* 下 */
+            -30px 0 0 #f59e0b,
+            /* 左 */
+            30px 0 0 #10b981,
+            /* 右 */
+            -20px -20px 0 #8b5cf6,
+            /* 左上 */
+            20px -20px 0 #ec4899,
+            /* 右上 */
+            -20px 20px 0 #14b8a6,
+            /* 左下 */
+            20px 20px 0 #f43f5e;
+        /* 右下 */
+    }
+
+    100% {
+        opacity: 0;
+        box-shadow:
+            0 -45px 0 #ef4444,
+            0 45px 0 #3b82f6,
+            -45px 0 0 #f59e0b,
+            45px 0 0 #10b981,
+            -35px -35px 0 #8b5cf6,
+            35px -35px 0 #ec4899,
+            -35px 35px 0 #14b8a6,
+            35px 35px 0 #f43f5e;
+    }
+}
+
+/* === 极繁环境装饰元素 === */
+
+/* 粗重黑边框文字 (超级马里奥风格) */
+.heavy-outline {
+    text-shadow:
+        -2px -2px 0 #1a1a1a,
+        2px -2px 0 #1a1a1a,
+        -2px 2px 0 #1a1a1a,
+        2px 2px 0 #1a1a1a,
+        3px 3px 0 #1a1a1a;
+    color: #FFF;
+    letter-spacing: 2px;
+}
+
+.heavy-outline-accent {
+    text-shadow:
+        -2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, 4px 4px 0 rgba(0, 0, 0, 0.5);
+    color: #FFD700;
+}
+
+/* 粗边框像素盒子 */
+.pixel-box {
+    background-color: #FFF;
+    border: 4px solid #1a1a1a;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+/* 像素云朵 (纯色块叠加无描边风格) */
+.pixel-cloud {
+    position: absolute;
+    z-index: 10;
+    opacity: 0.95;
+    /* 利用 drop-shadow 完美且精确地在整个不规则云朵底部生成1像素粗细的阴影 */
+    filter: drop-shadow(0 4px 0 #CBD5E1);
+}
+
+/* 大型云朵形状 */
+.pixel-cloud.c-large {
+    width: 80px;
+    height: 16px;
+    background: #FFF;
+}
+
+.pixel-cloud.c-large::before {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 16px;
+    background: #FFF;
+    bottom: 16px;
+    left: 16px;
+}
+
+.pixel-cloud.c-large::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    background: #FFF;
+    bottom: 32px;
+    left: 28px;
+}
+
+/* 小型云朵形状 */
+.pixel-cloud.c-small {
+    width: 48px;
+    height: 12px;
+    background: #FFF;
+}
+
+.pixel-cloud.c-small::before {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 12px;
+    background: #FFF;
+    bottom: 12px;
+    left: 8px;
+}
+
+/* 像素星星 (纯色无描边风格) */
+.pixel-star {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #FFD700;
+    filter: drop-shadow(0 3px 0 #D4AF37);
+    /* 暗黄色像素阴影 */
+    animation: twinkle 1s infinite alternate;
+    z-index: 9;
+}
+
+.pixel-star::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 6px;
+    background: #FFD700;
+    top: 0;
+    left: -6px;
+}
+
+.pixel-star::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 18px;
+    background: #FFD700;
+    top: -6px;
+    left: 0;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.6;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* 马里奥红砖地板 */
+.pixel-brick-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    background-color: #D25232;
+    background-image:
+        linear-gradient(90deg, #8B2500 3px, transparent 3px),
+        linear-gradient(#8B2500 3px, transparent 3px);
+    background-size: 30px 15px;
+    background-position: 0 0, 15px 7.5px;
+    border-top: 4px solid #1a1a1a;
+    z-index: 2;
+}
+
+/* 像素草丛 */
+.pixel-grass-bush {
+    position: absolute;
+    bottom: 45px;
+    /* 在砖块上方 */
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow:
+        50px -60px 0 #86efac,
+        55px -60px 0 #86efac,
+        60px -60px 0 #22c55e,
+        35px -55px 0 #86efac,
+        40px -55px 0 #86efac,
+        45px -55px 0 #86efac,
+        50px -55px 0 #86efac,
+        55px -55px 0 #22c55e,
+        60px -55px 0 #22c55e,
+        65px -55px 0 #22c55e,
+        70px -55px 0 #22c55e,
+        30px -50px 0 #86efac,
+        35px -50px 0 #86efac,
+        40px -50px 0 #86efac,
+        45px -50px 0 #86efac,
+        50px -50px 0 #86efac,
+        55px -50px 0 #22c55e,
+        60px -50px 0 #22c55e,
+        65px -50px 0 #22c55e,
+        70px -50px 0 #22c55e,
+        85px -50px 0 #86efac,
+        90px -50px 0 #22c55e,
+        95px -50px 0 #22c55e,
+        15px -45px 0 #86efac,
+        20px -45px 0 #86efac,
+        25px -45px 0 #22c55e,
+        35px -45px 0 #86efac,
+        40px -45px 0 #86efac,
+        45px -45px 0 #86efac,
+        50px -45px 0 #86efac,
+        55px -45px 0 #86efac,
+        60px -45px 0 #22c55e,
+        65px -45px 0 #22c55e,
+        70px -45px 0 #22c55e,
+        75px -45px 0 #15803d,
+        85px -45px 0 #86efac,
+        90px -45px 0 #86efac,
+        95px -45px 0 #86efac,
+        100px -45px 0 #22c55e,
+        105px -45px 0 #22c55e,
+        5px -40px 0 #86efac,
+        10px -40px 0 #86efac,
+        15px -40px 0 #86efac,
+        20px -40px 0 #86efac,
+        25px -40px 0 #86efac,
+        30px -40px 0 #22c55e,
+        40px -40px 0 #86efac,
+        45px -40px 0 #86efac,
+        50px -40px 0 #86efac,
+        55px -40px 0 #22c55e,
+        60px -40px 0 #22c55e,
+        65px -40px 0 #22c55e,
+        70px -40px 0 #22c55e,
+        75px -40px 0 #15803d,
+        85px -40px 0 #86efac,
+        90px -40px 0 #86efac,
+        95px -40px 0 #86efac,
+        100px -40px 0 #22c55e,
+        105px -40px 0 #22c55e,
+        110px -40px 0 #15803d,
+        0px -35px 0 #86efac,
+        5px -35px 0 #86efac,
+        10px -35px 0 #86efac,
+        15px -35px 0 #86efac,
+        20px -35px 0 #86efac,
+        25px -35px 0 #86efac,
+        30px -35px 0 #22c55e,
+        40px -35px 0 #86efac,
+        45px -35px 0 #86efac,
+        50px -35px 0 #86efac,
+        55px -35px 0 #22c55e,
+        60px -35px 0 #22c55e,
+        65px -35px 0 #22c55e,
+        70px -35px 0 #15803d,
+        75px -35px 0 #15803d,
+        85px -35px 0 #86efac,
+        90px -35px 0 #86efac,
+        95px -35px 0 #22c55e,
+        100px -35px 0 #22c55e,
+        105px -35px 0 #15803d,
+        110px -35px 0 #15803d,
+        0px -30px 0 #22c55e,
+        5px -30px 0 #86efac,
+        10px -30px 0 #86efac,
+        15px -30px 0 #86efac,
+        20px -30px 0 #86efac,
+        25px -30px 0 #22c55e,
+        30px -30px 0 #22c55e,
+        40px -30px 0 #86efac,
+        45px -30px 0 #86efac,
+        50px -30px 0 #22c55e,
+        55px -30px 0 #22c55e,
+        60px -30px 0 #22c55e,
+        65px -30px 0 #15803d,
+        70px -30px 0 #15803d,
+        75px -30px 0 #15803d,
+        85px -30px 0 #86efac,
+        90px -30px 0 #22c55e,
+        95px -30px 0 #22c55e,
+        100px -30px 0 #22c55e,
+        105px -30px 0 #15803d,
+        110px -30px 0 #15803d,
+        5px -25px 0 #22c55e,
+        10px -25px 0 #86efac,
+        15px -25px 0 #86efac,
+        20px -25px 0 #22c55e,
+        25px -25px 0 #22c55e,
+        30px -25px 0 #15803d,
+        40px -25px 0 #86efac,
+        45px -25px 0 #22c55e,
+        50px -25px 0 #22c55e,
+        55px -25px 0 #22c55e,
+        60px -25px 0 #15803d,
+        65px -25px 0 #15803d,
+        70px -25px 0 #15803d,
+        75px -25px 0 #15803d,
+        80px -25px 0 #15803d,
+        90px -25px 0 #22c55e,
+        95px -25px 0 #22c55e,
+        100px -25px 0 #15803d,
+        105px -25px 0 #15803d,
+        110px -25px 0 #15803d,
+        5px -20px 0 #22c55e,
+        10px -20px 0 #22c55e,
+        15px -20px 0 #22c55e,
+        20px -20px 0 #22c55e,
+        30px -20px 0 #15803d,
+        35px -20px 0 #15803d,
+        40px -20px 0 #22c55e,
+        45px -20px 0 #22c55e,
+        50px -20px 0 #22c55e,
+        55px -20px 0 #15803d,
+        60px -20px 0 #15803d,
+        65px -20px 0 #15803d,
+        70px -20px 0 #15803d,
+        75px -20px 0 #15803d,
+        90px -20px 0 #22c55e,
+        95px -20px 0 #15803d,
+        100px -20px 0 #15803d,
+        105px -20px 0 #15803d,
+        10px -15px 0 #22c55e,
+        15px -15px 0 #15803d,
+        20px -15px 0 #15803d,
+        25px -15px 0 #064e3b,
+        30px -15px 0 #064e3b,
+        40px -15px 0 #15803d,
+        45px -15px 0 #22c55e,
+        50px -15px 0 #22c55e,
+        55px -15px 0 #15803d,
+        60px -15px 0 #15803d,
+        65px -15px 0 #15803d,
+        70px -15px 0 #15803d,
+        75px -15px 0 #064e3b,
+        80px -15px 0 #064e3b,
+        85px -15px 0 #15803d,
+        90px -15px 0 #22c55e,
+        95px -15px 0 #15803d,
+        100px -15px 0 #064e3b,
+        105px -15px 0 #064e3b,
+        10px -10px 0 #22c55e,
+        15px -10px 0 #15803d,
+        20px -10px 0 #064e3b,
+        25px -10px 0 #064e3b,
+        30px -10px 0 #064e3b,
+        35px -10px 0 #064e3b,
+        45px -10px 0 #064e3b,
+        50px -10px 0 #064e3b,
+        55px -10px 0 #064e3b,
+        60px -10px 0 #15803d,
+        65px -10px 0 #15803d,
+        70px -10px 0 #064e3b,
+        75px -10px 0 #064e3b,
+        80px -10px 0 #064e3b,
+        85px -10px 0 #064e3b,
+        90px -10px 0 #15803d,
+        95px -10px 0 #064e3b,
+        100px -10px 0 #064e3b,
+        15px -5px 0 #064e3b,
+        20px -5px 0 #064e3b,
+        25px -5px 0 #064e3b,
+        30px -5px 0 #064e3b,
+        50px -5px 0 #064e3b,
+        55px -5px 0 #064e3b,
+        60px -5px 0 #064e3b,
+        65px -5px 0 #064e3b,
+        70px -5px 0 #064e3b,
+        75px -5px 0 #064e3b,
+        80px -5px 0 #064e3b,
+        85px -5px 0 #064e3b;
+    z-index: 3;
+}
+
+.pixel-grass-bush::before,
+.pixel-grass-bush::after {
+    display: none;
+}
+
+
+/* 通用动画类 */
+.float-anim {
+    animation: float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+/* JS 纯文本依次打字机的光标样式 */
+.typing-cursor::after {
+    content: '|';
+    animation: js-blink-caret .75s step-end infinite;
+    margin-left: 2px;
+    font-weight: normal;
+    color: #fff;
+}
+
+@keyframes js-blink-caret {
+
+    from,
+    to {
+        color: transparent
+    }
+
+    50% {
+        color: #fff
+    }
+}
+
+/* === 模块 3: 社群运营数据 (原始篝火与降落信封) === */
+
+/* 原始篝火容器 */
+.primitive-campfire-scene {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 120px;
+}
+
+/* 纯 CSS 绘制的原始风格篝火 (非像素) */
+.primitive-fire-container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    z-index: 5;
+}
+
+/* 底部发光 */
+.fire-glow {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 40px;
+    background: radial-gradient(ellipse at center, rgba(255, 120, 0, 0.6) 0%, rgba(255, 60, 0, 0) 70%);
+    animation: primitiveGlow 1.5s infinite alternate;
+}
+
+@keyframes primitiveGlow {
+    0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* 火焰主体 */
+.fire-flame {
+    position: absolute;
+    bottom: 20px;
+    background: #FF5E00;
+    border-radius: 50% 0 50% 50%;
+    transform-origin: bottom center;
+}
+
+.f-main {
+    left: 25px;
+    width: 30px;
+    height: 50px;
+    background: #FF9E00;
+    transform: rotate(45deg);
+    animation: fireDanceMain 0.6s infinite alternate ease-in-out;
+}
+
+.f-left {
+    left: 15px;
+    bottom: 15px;
+    width: 20px;
+    height: 35px;
+    transform: rotate(20deg);
+    animation: fireDanceSide 0.5s infinite alternate ease-in-out 0.1s;
+}
+
+.f-right {
+    left: 45px;
+    bottom: 18px;
+    width: 18px;
+    height: 30px;
+    background: #FFCC00;
+    transform: rotate(60deg);
+    animation: fireDanceSide 0.7s infinite alternate ease-in-out 0.2s;
+}
+
+@keyframes fireDanceMain {
+    0% {
+        transform: rotate(40deg) scale(0.9);
+        border-radius: 50% 0 50% 50%;
+    }
+
+    100% {
+        transform: rotate(50deg) scale(1.1);
+        border-radius: 40% 0 60% 40%;
+    }
+}
+
+@keyframes fireDanceSide {
+    0% {
+        transform: rotate(10deg) scale(0.8);
+    }
+
+    100% {
+        transform: rotate(30deg) scale(1.2);
+    }
+}
+
+/* 木柴 */
+.fire-wood {
+    position: absolute;
+    bottom: 10px;
+    width: 40px;
+    height: 12px;
+    background: #5C3A21;
+    border-radius: 5px;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.w1 {
+    left: 10px;
+    transform: rotate(-25deg);
+}
+
+.w2 {
+    left: 30px;
+    transform: rotate(25deg);
+}
+
+.w3 {
+    left: 20px;
+    bottom: 5px;
+    width: 45px;
+    transform: rotate(0deg);
+}
+
+/* 围在篝火周围的石头 */
+.fire-stone {
+    position: absolute;
+    bottom: 0;
+    width: 18px;
+    height: 12px;
+    background: #7F8C8D;
+    border-radius: 50%;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.s1 {
+    left: 5px;
+    bottom: 2px;
+}
+
+.s2 {
+    left: 20px;
+    bottom: -3px;
+}
+
+.s3 {
+    left: 35px;
+    bottom: -5px;
+    width: 22px;
+    height: 14px;
+}
+
+.s4 {
+    left: 55px;
+    bottom: -2px;
+}
+
+.s5 {
+    left: 65px;
+    bottom: 3px;
+}
+
+/* === 围着篝火跳舞的小人 === */
+.primitive-campfire-scene .person.v3 {
+    position: absolute;
+    bottom: 30px;
+    transform-origin: bottom center;
+}
+
+/* 站位与舞蹈动画 */
+.p-dance-1 {
+    left: -10px;
+    z-index: 6;
+    transform: scale(1.5);
+    animation: danceLeft 1.2s infinite alternate ease-in-out;
+}
+
+.p-dance-2 {
+    right: -10px;
+    z-index: 6;
+    transform: scale(1.5) scaleX(-1);
+    animation: danceRight 1.3s infinite alternate ease-in-out 0.2s;
+}
+
+/* 在背面的小人暗一点，小一点 */
+.p-dance-3 {
+    left: 30px;
+    bottom: 45px;
+    z-index: 4;
+    transform: scale(1.2);
+    filter: brightness(0.7);
+    animation: danceBack 1.4s infinite alternate ease-in-out 0.4s;
+}
+
+.p-dance-4 {
+    right: 30px;
+    bottom: 45px;
+    z-index: 4;
+    transform: scale(1.2) scaleX(-1);
+    filter: brightness(0.7);
+    animation: danceBack 1.1s infinite alternate ease-in-out 0.1s;
+}
+
+/* 舞蹈动作: 扭腰抬手 */
+@keyframes danceLeft {
+    0% {
+        transform: scale(1.5) rotate(-5deg) translateY(0);
+    }
+
+    100% {
+        transform: scale(1.5) rotate(15deg) translateY(-10px);
+    }
+}
+
+@keyframes danceRight {
+    0% {
+        transform: scale(1.5) scaleX(-1) rotate(-5deg) translateY(0);
+    }
+
+    100% {
+        transform: scale(1.5) scaleX(-1) rotate(15deg) translateY(-10px);
+    }
+}
+
+@keyframes danceBack {
+    0% {
+        transform: scale(1.2) translateY(0);
+    }
+
+    100% {
+        transform: scale(1.2) translateY(-8px);
+    }
+}
+
+/* 为了表现跳舞，让手臂也挥舞起来 */
+.primitive-campfire-scene .person.v3 .p-arm-l {
+    animation: pumpArm 0.6s infinite alternate;
+}
+
+.primitive-campfire-scene .person.v3 .p-arm-r {
+    animation: pumpArm 0.6s infinite alternate 0.3s;
+}
+
+@keyframes pumpArm {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(180deg) translateY(-4px);
+    }
+}
+
+
+/* === 落下的大信封 === */
+.falling-data-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding-top: 20px;
+}
+
+/* === 落下的小布告/像素信封 === */
+.falling-data-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    /* 间距缩小一点 */
+    justify-items: center;
+    align-items: center;
+    padding: 0 10px;
+    /* 留出一点边距 */
+    top: 15% !important;
+    /* 整体往下移一丢丢防挡标题 */
+}
+
+.falling-envelope {
+    position: relative;
+    width: 140px;
+    /* 改窄一些以适应横排两个 */
+    padding: 10px 5px;
+    /* 内边距也缩小 */
+    background-color: #FFF;
+    border: 3px solid #1a1a1a;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    /* 初始在上方隐藏 */
+    opacity: 0;
+    transform: translateY(-200px);
+}
+
+/* 顶部贴的像素风小胶带 */
+.pixel-tape {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 30px;
+    height: 10px;
+    background-color: #FFB347;
+    /* 橙色胶带 */
+    border: 2px solid #1a1a1a;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+/* 激活幻灯片时触发落下动画 */
+.swiper-slide-active .env-1 {
+    animation: fallDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s;
+}
+
+.swiper-slide-active .env-2 {
+    animation: fallDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.4s;
+}
+
+.swiper-slide-active .env-3 {
+    animation: fallDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.6s;
+}
+
+.swiper-slide-active .env-4 {
+    animation: fallDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+}
+
+/* 简单的错落旋转角度，并去掉影响布局的夸张 margin */
+.env-1 {
+    --r: -4deg;
+    margin-top: 20px;
+}
+
+.env-2 {
+    --r: 3deg;
+    margin-top: 10px;
+}
+
+.env-3 {
+    --r: 2deg;
+}
+
+.env-4 {
+    --r: -3deg;
+    margin-top: -10px;
+}
+
+/* 落下并带有一点点旋转弹跳 */
+@keyframes fallDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-200px) rotate(-10deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--r, 0deg));
+    }
+}
+
+/* 文本样式 (去除重影，保持清晰) */
+.falling-envelope .env-label {
+    font-size: 13px;
+    /* 字体略微缩小 */
+    color: #1a1a1a;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    /* 摒弃复杂的黑描边，用简单的文字阴影提升清晰度 */
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.falling-envelope .env-value {
+    font-size: 19px;
+    /* 数字略微缩小 */
+    color: #FF5E00;
+    margin: 0;
+    /* 为关键数字依然保留一些描边感，但避免过于粘连 */
+    text-shadow:
+        -1px -1px 0 #1a1a1a,
+        1px -1px 0 #1a1a1a,
+        -1px 1px 0 #1a1a1a,
+        1px 1px 0 #1a1a1a,
+        2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.falling-envelope .unit {
+    font-size: 12px;
+    font-family: var(--font-pixel-zh);
+    color: #1a1a1a;
+    /* 单位用黑色，和红色数字区分开 */
+    text-shadow: none;
+    /* 单位字小，一定不能用描边 */
+    margin-left: 4px;
+}
+
+/* === 模块 5：研究产出 === */
+.research-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.res-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border: 3px solid var(--color-text);
+    box-shadow: 2px 2px 0 var(--color-text);
+    text-align: center;
+}
+
+.res-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 简单的 CSS 图标 */
+.icon-book {
+    background-color: #60A5FA;
+    border: 2px solid var(--color-text);
+    border-radius: 2px;
+    position: relative;
+}
+
+.icon-book::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 18px;
+    height: 2px;
+    background: #fff;
+    box-shadow: 0 4px 0 #fff, 0 8px 0 #fff;
+}
+
+.icon-chat {
+    background-color: #34D399;
+    border: 2px solid var(--color-text);
+    border-radius: 6px;
+    position: relative;
+}
+
+.icon-chat::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 4px;
+    border: 4px solid transparent;
+    border-top-color: var(--color-text);
+}
+
+.icon-map {
+    background-color: #F87171;
+    border: 2px solid var(--color-text);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(45deg);
+    position: relative;
+    top: -2px;
+}
+
+.icon-map::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.res-num {
+    font-size: 19px;
+    color: var(--color-accent);
+    margin: 0;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.res-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+/* 书桌像素画 */
+.pixel-desk {
+    width: 120px;
+    height: 60px;
+    background: #8B4513;
+    /* 深木色 */
+    border: 4px solid var(--color-text);
+    border-bottom: none;
+    position: relative;
+}
+
+.pixel-desk::before,
+.pixel-desk::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    width: 12px;
+    height: 50px;
+    background: #5C2E0A;
+    border: 4px solid var(--color-text);
+    border-bottom: none;
+}
+
+.pixel-desk::before {
+    left: 4px;
+}
+
+.pixel-desk::after {
+    right: 4px;
+}
+
+/* === 模块 6：社会曝光 === */
+.social-events li {
+    margin-bottom: 8px;
+    position: relative;
+    list-style: none;
+}
+
+.social-events li::before {
+    content: "►";
+    font-size: 10px;
+    color: #EC4899;
+    position: absolute;
+    left: -15px;
+    top: 2px;
+}
+
+/* 大喇叭动画场景 */
+.megaphone-scene {
+    width: 100px;
+    height: 80px;
+    position: relative;
+    left: -20px;
+}
+
+.pixel-megaphone {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 30px;
+    background: #F87171;
+    border: 4px solid var(--color-text);
+    clip-path: polygon(0 30%, 30% 30%, 100% 0, 100% 100%, 30% 70%, 0 70%);
+}
+
+.pixel-megaphone::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 16px;
+    background: #9CA3AF;
+    border: 4px solid var(--color-text);
+    border-right: none;
+}
+
+.anim-bounce {
+    animation: bounceObj 0.8s infinite alternate cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes bounceObj {
+    0% {
+        transform: translateY(0) rotate(-10deg);
+    }
+
+    100% {
+        transform: translateY(-10px) rotate(-10deg);
+    }
+}
+
+.sound-waves {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-right: 4px solid var(--color-text);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+}
+
+.w1 {
+    width: 10px;
+    height: 20px;
+    animation: broadcast 1.5s infinite;
+}
+
+.w2 {
+    width: 25px;
+    height: 40px;
+    animation: broadcast 1.5s infinite 0.3s;
+}
+
+.w3 {
+    width: 40px;
+    height: 60px;
+    animation: broadcast 1.5s infinite 0.6s;
+}
+
+@keyframes broadcast {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) scale(1.2);
+    }
+}
+
+/* === 模块 7：结尾与海报生成 === */
+.pixel-btn-game {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #FFB347;
+    /* 温暖明亮的纪念颜色 */
+    color: #1a1a1a;
+    font-family: var(--font-pixel-zh);
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border: 4px solid #1a1a1a;
+    box-shadow: 4px 4px 0 #1a1a1a;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s, box-shadow 0.1s;
+    animation: pulse-btn 2s infinite;
+}
+
+.pixel-btn-game:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #1a1a1a;
+}
+
+/* 按钮的内部高光 */
+.pixel-btn-game::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes pulse-btn {
+    0% {
+        transform: scale(1);
+    }
+
+    5% {
+        transform: scale(1.05);
+    }
+
+    10% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 简单的游戏手柄小图标 */
+.icon-gamepad {
+    background-color: #EC4899;
+    border: 2px solid #1a1a1a;
+    border-radius: 4px;
+    position: relative;
+    top: -2px;
+}
+
+.icon-gamepad::before {
+    /* 十字键 */
+    content: "+";
+    color: #fff;
+    font-size: 14px;
+    line-height: 12px;
+    font-weight: bold;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+}
+
+.icon-gamepad::after {
+    /* AB按键 */
+    content: ":";
+    color: #fff;
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: bold;
+    transform: rotate(90deg);
+    position: absolute;
+    right: 0px;
+    top: -1px;
+}
+
+/* === 详情弹窗相关样式（重设计版）=== */
+.pixel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.pixel-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.detail-modal {
+    width: 88%;
+    max-width: 340px;
+    background: #fff;
+    padding: 28px 20px 20px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.pixel-overlay.active .detail-modal {
+    transform: scale(1);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: var(--color-accent);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 3px 3px 0 #1a1a1a;
+    z-index: 10;
+}
+
+/* 小标题：项目方名称 */
+.modal-org {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    text-align: center;
+    font-family: var(--font-pixel-zh);
+}
+
+/* 主体大字（卡片主要标语） */
+.modal-title,
+.modal-impact-text {
+    font-size: 19px;
+    color: #1a3a1a;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+    font-family: var(--font-pixel-zh);
+    padding: 0 10px;
+}
+
+.modal-data-row {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+
+.modal-num {
+    font-size: 36px;
+    color: #2f855a;
+    font-weight: bold;
+}
+
+.modal-unit {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 横向图片画廊 */
+.modal-gallery {
+    width: 100%;
+    height: 190px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+    gap: 0;
+    /* gap会破坏scroll-snap，改为每个item内部padding处理 */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border: 2px solid #1a1a1a;
+    box-shadow: 3px 3px 0 #1a1a1a;
+    border-radius: 2px;
+    padding: 0;
+    touch-action: pan-x;
+    /* 允许浏览器识别横向手势 */
+    overscroll-behavior-x: contain;
+    /* 防止滚动穿透到外层 */
+    cursor: grab;
+}
+
+/* 大字高亮（org-desc 模板中 {} 包裹的部分） */
+.modal-subject {
+    font-size: 19px;
+    font-weight: bold;
+    color: #1a3a1a;
+    font-family: var(--font-pixel-zh);
+    vertical-align: baseline;
+}
+
+
+.modal-gallery::-webkit-scrollbar {
+    display: none;
+}
+
+/* 每张图片滑块 */
+.modal-gallery-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    height: 190px;
+    background: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 占位图（图片加载失败 or 未填充时） */
+.modal-gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg,
+            #d0d0d0,
+            #d0d0d0 8px,
+            #e8e8e8 8px,
+            #e8e8e8 16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 12px;
+    gap: 6px;
+}
+
+.modal-gallery-placeholder::before {
+    content: "🖼";
+    font-size: 28px;
+}
+
+/* 底部滑动提示 */
+.modal-gallery-hint {
+    font-size: 10px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.pixel-overlay.hidden {
+    display: none;
+}
+
+
+
+/* ============================================================
+   响应式自适应 — 多屏幕媒体查询
+   目标断点：
+     ① ≤ 360px  小屏手机 (iPhone SE 等)
+     ② 361–479px 标准手机 (默认样式已适配)
+     ③ ≥ 480px  大屏手机 / 小平板
+     ④ ≥ 768px  平板竖屏
+     ⑤ ≥ 1024px 桌面端
+     ⑥ ≥ 1440px 宽屏桌面
+   ============================================================ */
+
+/* ① 小屏手机（max-width: 360px）
+   处理 iPhone SE、旧款 Android 等 320-360px 设备 */
+@media (max-width: 360px) {
+
+    /* Logo 缩小 */
+    .global-logo-header {
+        height: 45px;
+        top: 3px;
+    }
+
+    .org-logos {
+        width: 200px;
+    }
+
+    /* 封面模块 - 蛋糕缩小防溢出 */
+    .cover-module .pixel-cake {
+        transform: translate(-50%, -50%) scale(1.6) !important;
+    }
+
+    /* 内容块字号整体缩小 */
+    .content h1,
+    .content h2 {
+        font-size: 16px !important;
+    }
+
+    /* 各模块标题 */
+    .impact-visualization-module h2,
+    .community-content h2,
+    .research-module-content h2,
+    .social-module-content h2 {
+        font-size: 18px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* 故事文字区域 */
+    .narrative-data-module .js-seq,
+    .narrative-data-module p {
+        font-size: 15px !important;
+        min-height: auto !important;
+    }
+
+    /* 模块2数据数字 */
+    .narrative-data-module .data-number {
+        font-size: 16px !important;
+    }
+
+    /* 漂浮卡片宽度 */
+    .floating-card {
+        width: 70% !important;
+        font-size: 12px;
+    }
+
+    .floating-cards {
+        height: 260px !important;
+    }
+
+    /* 社群模块文字 */
+    .community-content .heavy-outline {
+        font-size: 15px !important;
+    }
+
+    .community-content .data-number {
+        font-size: 19px !important;
+    }
+
+    /* 研究/社会曝光模块文字 */
+    .research-module-content p,
+    .social-module-content p {
+        font-size: 14px !important;
+    }
+
+    .research-module-content .data-number,
+    .social-module-content .data-number {
+        font-size: 19px !important;
+    }
+
+    /* 结尾模块 */
+    .ending-module .pixel-box {
+        padding: 10px !important;
+    }
+
+    .ending-module h2 {
+        font-size: 13px !important;
+    }
+
+    .ending-module p,
+    .ending-module div {
+        font-size: 11px !important;
+    }
+
+    /* 模态弹窗 */
+    .detail-modal {
+        width: 92%;
+        padding: 20px 15px;
+    }
+
+    .modal-num {
+        font-size: 28px;
+    }
+
+    .modal-description {
+        font-size: 13px;
+    }
+}
+
+/* ③ 大屏手机 / 小平板（480px–767px）
+   充分利用更大的屏幕空间 */
+@media (min-width: 480px) {
+    .global-logo-header {
+        height: 70px;
+    }
+
+    .org-logos {
+        width: 300px;
+    }
+
+    /* 内容块最大宽度扩展 */
+    .content {
+        max-width: 460px !important;
+    }
+
+    /* 封面蛋糕适当放大 */
+    .cover-module .pixel-cake {
+        transform: translate(-50%, -50%) scale(2.4) !important;
+    }
+
+    /* 字号略微放大 */
+    .narrative-data-module .js-seq,
+    .narrative-data-module p {
+        font-size: 21px !important;
+    }
+
+    .impact-visualization-module h2,
+    .community-content h2,
+    .research-module-content h2,
+    .social-module-content h2 {
+        font-size: 26px !important;
+    }
+
+    .floating-card {
+        width: 58% !important;
+    }
+
+    .floating-cards {
+        height: 320px !important;
+    }
+
+    .floating-card .card-num {
+        font-size: 38px !important;
+    }
+
+    .floating-card .card-title {
+        font-size: 15px !important;
+    }
+
+    .community-content .heavy-outline {
+        font-size: 19px !important;
+    }
+
+    .research-module-content p,
+    .social-module-content p {
+        font-size: 18px !important;
+    }
+}
+
+/* ④ 平板竖屏（768px+）
+   页面居中展示，并对整体布局做列约束 */
+@media (min-width: 768px) {
+
+    /* Logo 放大居中 */
+    .global-logo-header {
+        height: 80px;
+        top: 8px;
+    }
+
+    .org-logos {
+        width: 360px;
+    }
+
+    /* Swiper 使用居中列布局 */
+    .swiper.mySwiper {
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 给 body 加一个铺满背景色，让两侧不空白 */
+    body {
+        background-color: #1a1a1a;
+    }
+
+    /* 内容块最大宽度和字号扩展 */
+    .content {
+        max-width: 560px !important;
+        width: 88% !important;
+    }
+
+    /* 封面模块 */
+    .cover-module .content h1 {
+        font-size: 28px !important;
+    }
+
+    .cover-module .content .pixel-en {
+        font-size: 19px !important;
+    }
+
+    .cover-module .pixel-cake {
+        transform: translate(-50%, -50%) scale(2.8) !important;
+    }
+
+    /* 模块2 - 叙事数据 */
+    .narrative-data-module {
+        width: 86% !important;
+    }
+
+    .narrative-data-module .js-seq,
+    .narrative-data-module p[style*="font-size: 19px"] {
+        font-size: 19px !important;
+    }
+
+    .narrative-data-module .data-number[style*="font-size: 19px"] {
+        font-size: 19px !important;
+    }
+
+    /* 模块3 - 影响力 */
+    .impact-visualization-module h2 {
+        font-size: 28px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .impact-visualization-module p {
+        font-size: 17px !important;
+    }
+
+    .floating-cards {
+        height: 360px !important;
+    }
+
+    .floating-card {
+        width: 55% !important;
+    }
+
+    .floating-card .card-num {
+        font-size: 42px !important;
+    }
+
+    .floating-card .card-title {
+        font-size: 15px !important;
+    }
+
+    /* 卡片错位布局保持，只调整间距 */
+    .floating-card.card-2 {
+        top: 65px !important;
+    }
+
+    .floating-card.card-3 {
+        top: 130px !important;
+    }
+
+    .floating-card.card-4 {
+        top: 195px !important;
+    }
+
+    .floating-card.card-5 {
+        top: 260px !important;
+    }
+
+    /* 模块4 - 社群 */
+    .community-content h2 {
+        font-size: 26px !important;
+    }
+
+    .community-content .heavy-outline {
+        font-size: 21px !important;
+    }
+
+    /* 模块5 研究文字 */
+    .research-module-content h2 {
+        font-size: 26px !important;
+    }
+
+    .research-module-content p {
+        font-size: 17px !important;
+    }
+
+    /* 模块6 社会曝光 */
+    .social-module-content h2 {
+        font-size: 26px !important;
+    }
+
+    .social-module-content p {
+        font-size: 17px !important;
+    }
+
+    /* 结尾模块 */
+    .ending-module .pixel-box h2 {
+        font-size: 18px !important;
+    }
+
+    .ending-module .pixel-box div,
+    .ending-module .pixel-box p {
+        font-size: 14px !important;
+    }
+
+    /* 底部像素人群 - 平板下铺展开一些 */
+    .pixel-crowd {
+        height: 110px;
+    }
+
+    /* 场景装饰元素扩展 */
+    .pixel-cloud.c-large {
+        transform: scale(1.3);
+    }
+
+    /* 篝火场景扩展 */
+    .bonfire-party {
+        height: 300px !important;
+    }
+
+    .pixel-bonfire-container {
+        transform: scale(1.2);
+    }
+
+    /* 种树场景 */
+    .planting-scene {
+        transform: translateX(-50%) scale(1.2) !important;
+    }
+
+    /* 详情弹窗 */
+    .detail-modal {
+        max-width: 400px;
+    }
+
+    .modal-num {
+        font-size: 44px;
+    }
+
+    .modal-description {
+        font-size: 16px;
+        line-height: 2;
+    }
+
+    /* 滚动提示 */
+    .scroll-hint p {
+        font-size: 16px !important;
+    }
+}
+
+/* ⑤ 桌面端（1024px+）*/
+/* 移除了过大的桌面端覆盖样式，统一使用顶部的 430px 模拟列逻辑 */
+/* 删除了冗余的桌面端样式覆盖，保持页面简洁 */
+
+/* ============================================================
+   BGM Music Toggle
+   ============================================================ */
+#music-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 28px;
+    height: 28px;
+    background-color: var(--color-red);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    z-index: 10001;
+    /* 确保在 loading-screen 之上 */
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #1a1a1a;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+#music-toggle.playing {
+    animation: spin 4s linear infinite;
+    background-color: var(--color-green);
+}
+
+#music-toggle:active {
+    transform: scale(0.9);
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================
+   桌面端/宽屏适配 (居中限制最大宽度)
+   ============================================================ */
+.swiper-slide {
+    overflow: hidden;
+}
+
+/* 确保所有 content 块在居中时保持 transform 逻辑 */
+@media (min-width: 768px) {
+
+    /* 为平板 / 桌面在 swiper 外部加全屏背景填充色 */
+    html {
+        background-color: #2a1a2a;
+    }
+
+    /* 让全局 loading 遮罩适配整个视口 */
+    .loading-screen {
+        background-color: var(--color-cream);
+    }
+
+    /* 详情弹窗遮罩层也要铺满整个视口 */
+    .pixel-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+/* === 弹幕样式 === */
+.danmaku-item {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 16px;
+    padding: 6px 14px;
+    color: #555;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    pointer-events: none;
+    will-change: transform;
+    animation: danmaku-slide linear forwards;
+    text-shadow: none;
+    opacity: 0.85;
+}
+
+@keyframes danmaku-slide {
+    from {
+        transform: translateX(100vw);
+    }
+
+    to {
+        transform: translateX(-200%);
+    }
+}
+
+/* === 海报制作器输入组件 === */
+.pixel-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #000;
+    font-family: 'Fusion Pixel 12px Proportional zh_hans', sans-serif;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.pixel-input:focus {
+    background: #fffdf0;
+    border-color: #FF5E00;
+}
+
+.pixel-btn-small {
+    padding: 5px 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #666;
+}
+
+.pixel-btn-small:active {
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}
+
+/* === 2 周年英雄海报设计 (Hero Poster Style) === */
+.anniversary-poster-design {
+    width: 100%;
+    aspect-ratio: 1 / 1.7;
+    /* 竖向海报比例 */
+    background: #1a3a6c;
+    /* 深蓝色背景 */
+    border: 4px solid #1a3a6c;
+    position: relative;
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 内框体 */
+.anniversary-poster-design::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 2px solid #fff;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.poster-header {
+    width: 100%;
+    margin-top: 15px;
+    z-index: 2;
+    text-align: left;
+    padding: 0 10px;
+}
+
+.poster-quote {
+    font-size: 36px;
+    line-height: 1.2;
+    color: #fff;
+    font-weight: 900;
+    margin: 0;
+    font-family: 'Fusion Pixel 12px Proportional zh_hans', sans-serif;
+    text-shadow: 2px 2px 0 #000;
+    word-break: break-all;
+}
+
+.poster-subtag {
+    margin-top: 10px;
+    background: #ffde00;
+    padding: 4px 12px;
+    z-index: 2;
+    border: 2px solid #000;
+}
+
+.subtag-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+}
+
+.poster-main {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.poster-avatar-wrap {
+    width: 90%;
+    height: 80%;
+    position: relative;
+    border: 4px solid #fff;
+    background: #fff;
+    overflow: visible;
+    /* 让爆炸气泡能溢出 */
+}
+
+.poster-avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 邀请码标签 (右上角) */
+.invitation-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ffde00;
+    border: 2px solid #000;
+    padding: 2px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.badge-label {
+    font-size: 9px;
+    color: #000;
+}
+
+.badge-code {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    font-family: 'Pixel-Number', sans-serif;
+}
+
+/* 爆炸气泡 (右下角) */
+.explosion-bubble {
+    position: absolute;
+    right: -25px;
+    bottom: 20px;
+    width: 120px;
+    height: 100px;
+    background: #ffde00;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    /* 使用 clip-path 制作爆炸形状 */
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+            50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    /* 让文字在爆炸中心 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 修复一下 clip-path 可能导致的黑边问题，改为利用 svg 遮罩或直接通过简单的伪元素实现 */
+.explosion-bubble {
+    clip-path: none;
+    background: #ffde00;
+    /* 备选：使用更加复杂的 polygon 模拟参考图的 jagged 形状 */
+    clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%,
+            100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
+    /* 像素化的方块感 */
+}
+
+/* 更贴近参考图的爆炸感：多角形状 */
+.explosion-bubble {
+    clip-path: polygon(50% 0%, 64% 18%, 88% 13%, 83% 36%, 100% 50%, 83% 64%, 88% 87%, 64% 82%, 50% 100%, 36% 82%, 12% 87%, 17% 64%, 0% 50%, 17% 36%, 12% 13%, 36% 18%);
+}
+
+.explosion-text {
+    font-size: 20px;
+    font-weight: 900;
+    color: #000;
+    transform: rotate(-10deg);
+    font-family: 'Fusion Pixel 12px Proportional zh_hans', sans-serif;
+}
+
+.poster-footer {
+    width: 100%;
+    height: 60px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 10px 10px;
+    box-sizing: border-box;
+}
+
+.footer-folder-tab {
+    background: #ffde00;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #000;
+    border-radius: 4px 15px 4px 4px;
+}
+
+.folder-icon {
+    width: 14px;
+    height: 18px;
+    background: #000;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.folder-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+}
+
+.footer-emblem {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid #000;
+    background-image: radial-gradient(circle, #ffde00 20%, transparent 20%), radial-gradient(circle, #1a3a6c 40%, transparent 40%);
+    background-size: 100% 100%;
+}
+
+/* === 海报预览适配 === */
+.poster-module-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.poster-preview-scale {
+    transform: scale(var(--poster-scale));
+    transform-origin: top center;
+    margin-bottom: var(--poster-margin);
+    /* 抵消缩放后的空白 */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    transition: transform 0.3s ease-out;
+    /* 窗口缩放时平滑过渡 */
+}
+
+/* 按钮组样式优化 */
+.poster-action-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 50;
+}
+
+.mod-btn-customize {
+    background: #ffde00 !important;
+    color: #000 !important;
+    width: 240px !important;
+    border-color: #000 !important;
+}
+
+.mod-btn-generate {
+    width: 240px !important;
+    font-size: 14px !important;
+}
+
+.loading-blink {
+    display: none;
+    font-size: 12px;
+    margin-top: 8px;
+    color: #FF5E00;
+    animation: blink 1s infinite;
+}
+
+/* === 海报定制弹窗专属样式 === */
+#poster-edit-modal .edit-modal {
+    position: relative;
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#poster-edit-modal .pixel-input {
+    background: #f8f8f8 !important;
+    border: 2px solid #000 !important;
+    padding: 10px !important;
+    font-size: 14px !important;
+    outline: none !important;
+    transition: border-color 0.2s, background 0.2s;
+    color: #1a1a1a !important;
+}
+
+#poster-edit-modal .pixel-input:focus {
+    border-color: #ff5e00 !important;
+    background: #fff !important;
+}
+
+#modal-avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 按钮图标预览 */
+.icon-edit {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E") no-repeat center;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E") no-repeat center;
+}
+
+/* === 模块 7：叙事总结与弹幕专用样式 === */
+.danmaku-container {
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.danmaku-item {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 16px;
+    font-family: var(--font-pixel-zh);
+    color: #fff;
+    /* 默认浅色文字带黑边，增强在米色背景下的可见度 */
+    text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000;
+    pointer-events: none;
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+/* 修复模块 7 文字重叠问题 & 缩小内容框 */
+.swiper-slide:nth-child(7) .content {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    border: 4px solid #1a1a1a !important;
+    box-shadow: 6px 6px 0px #1a1a1a !important;
+    padding: 15px 10px !important;
+    /* 缩小内边距 */
+    width: 82% !important;
+    /* 缩小宽度 */
+    max-width: 360px !important;
+    /* 缩小最大宽度 */
+}
+
+.swiper-slide:nth-child(7) .content h2 {
+    font-size: 20px !important;
+    line-height: 1.4 !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 20px !important;
+    color: #FFD700 !important;
+    /* 亮黄色 */
+    text-shadow:
+        2px 2px 0 #000,
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        3px 3px 0 rgba(0, 0, 0, 0.3) !important;
+    /* 黑色描边效果 */
+}
+
+.swiper-slide:nth-child(7) .content p {
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.5px !important;
+    color: #333 !important;
+    text-shadow: none !important;
+}
+
+/* 特殊：针对重描边文字的优化（如果仍然保留类名） */
+.swiper-slide:nth-child(7) .heavy-outline,
+.swiper-slide:nth-child(7) .heavy-outline-accent {
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1) !important;
+    color: #1a1a1a !important;
+}
