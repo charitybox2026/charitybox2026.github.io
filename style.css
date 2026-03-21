@@ -2342,7 +2342,7 @@ a,
     /* 浅绿背景 */
     border: 3px solid #1a1a1a;
     /* 回归深色边框 */
-    padding: 8px 12px;
+    padding: 6px 10px;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
     text-align: left;
     opacity: 0;
