@@ -189,13 +189,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 el.classList.add('typing-cursor');
                 const text = el.getAttribute('data-original-text') || '';
                 let charIdx = 0;
+                
+                // 解决方案：动态打字速度，字数越多打字越快，确保单段最慢不超过1.2秒，最宽容35ms/字，极限快10ms/字
+                const speed = Math.max(10, Math.min(35, 1200 / Math.max(1, text.length)));
 
                 function typeChar() {
                     if (seqId !== currentSeqId) return;
                     if (charIdx < text.length) {
                         el.textContent += text.charAt(charIdx);
                         charIdx++;
-                        setTimeout(typeChar, 40);
+                        setTimeout(typeChar, speed);
                     } else {
                         idx++;
                         next();
@@ -641,8 +644,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const laneIndex = availableLanes[Math.floor(Math.random() * availableLanes.length)];
 
-        // 锁定该轨道一段时间 (例如 3500ms)，避免弹幕重叠
-        laneOccupancy[laneIndex] = now + 4000;
+        // 锁定该轨道一段时间 (例如 2000ms)，避免弹幕重叠
+        laneOccupancy[laneIndex] = now + 2000;
 
         const item = document.createElement('div');
         item.className = 'danmaku-item';
@@ -655,8 +658,8 @@ document.addEventListener("DOMContentLoaded", () => {
         item.style.left = '100%';
         container.appendChild(item);
 
-        // 随机速度 (12s - 20s)
-        const duration = 12000 + Math.random() * 8000;
+        // 随机速度 (6s - 10s，原本是12-20s)
+        const duration = 6000 + Math.random() * 4000;
 
         const animation = item.animate([
             { left: '100%', transform: 'translateX(0)' },

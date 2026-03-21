@@ -3,8 +3,8 @@ import re
 import mimetypes
 import os
 
-def inject_base64_poster():
-    filepath = "assets/poster.jpg"
+def inject_avatar_base64():
+    filepath = "assets/speaker.png"
     
     if not os.path.exists(filepath):
         print(f"Error: {filepath} not found.")
@@ -13,7 +13,7 @@ def inject_base64_poster():
     # Guess MIME type
     mime_type, _ = mimetypes.guess_type(filepath)
     if not mime_type:
-        mime_type = "image/jpeg"
+        mime_type = "image/png"
 
     # Encode to Base64
     with open(filepath, "rb") as image_file:
@@ -24,17 +24,19 @@ def inject_base64_poster():
     with open("index.html", "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Replace the existing src
-    # This regex will match either src="assets/poster.jpg" or an existing base64 string
-    # Because replacing a huge base64 string via regex might cause memory issues, we'll just look for the ID
-    pattern = r'(id="poster-bg-img"\s+src=")(.*?)(")'
-    new_content = re.sub(pattern, r'\g<1>' + data_url + r'\g<3>', content, flags=re.DOTALL)
+    # Replace the existing src for preview-avatar
+    pattern1 = r'(id="preview-avatar".*?src=")(.*?)(")'
+    new_content = re.sub(pattern1, r'\g<1>' + data_url + r'\g<3>', content, flags=re.DOTALL)
+
+    # We should also replace modal-avatar-preview img
+    pattern2 = r'(<div id="modal-avatar-preview".*?<img\s+src=")(.*?)(")'
+    new_content = re.sub(pattern2, r'\g<1>' + data_url + r'\g<3>', new_content, flags=re.DOTALL)
 
     # Write back to index.html
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    print("Success: Base64 injection complete. index.html updated.")
+    print("Success: Avatar Base64 injection complete. index.html updated.")
 
 if __name__ == "__main__":
-    inject_base64_poster()
+    inject_avatar_base64()
