@@ -302,15 +302,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalAvatarPreview = document.getElementById('modal-avatar-preview');
 
     if (nicknameInput && previewSubtitle) {
-        nicknameInput.addEventListener('input', (e) => {
-            const val = e.target.value.trim();
-            previewSubtitle.textContent = val ? `- 1% 好事代言人 ${val} -` : '- 1% 好事代言人 -';
+        nicknameInput.addEventListener('input', () => {
+            const val = nicknameInput.value.trim();
+            previewSubtitle.innerText = val || '小盒子';
         });
     }
 
     if (quoteInput && previewTitle) {
         quoteInput.addEventListener('input', (e) => {
-            const val = e.target.value;
+            let val = e.target.value;
+            if (val.length > 6 && !val.includes("\n")) {
+                val = val.substring(0, 6) + "\n" + val.substring(6);
+            }
             // 支持换行显示 (普通换行或 \n)
             previewTitle.innerHTML = val ? val.replace(/\n|\\n/g, '<br>') : '给希望以方法<br>给善意以答案';
         });
@@ -327,6 +330,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     previewAvatar.src = dataUrl;
                     // 更新 Modal 预览
                     modalAvatarPreview.innerHTML = `<img src="${dataUrl}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    modalAvatarPreview.style.background = 'transparent';
+                    const img = modalAvatarPreview.querySelector('img');
+                    if (img) img.style.width = '100%';
+                    const previewWrapper = previewAvatar.parentElement;
+                    if (previewWrapper && previewWrapper.classList.contains('avatar-wrapper')) {
+                        previewWrapper.style.background = 'transparent';
+                    }
+                    previewAvatar.style.width = '100%';
                 };
                 reader.readAsDataURL(file);
             }
@@ -360,7 +371,25 @@ document.addEventListener("DOMContentLoaded", () => {
             // 目标截图区域：竖版海报
             const targetElement = document.getElementById('anniversary-poster-preview');
 
-            // 稍微延迟保证没有未完成的渲染
+            // 提前创建遮罩层防止闪烁
+            const flashBlocker = document.createElement('div');
+            flashBlocker.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: #1a3a6c; z-index: 9999;
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+            `;
+            const loadingMsg = document.createElement('p');
+            loadingMsg.innerText = '正在生成高清海报...';
+            loadingMsg.style.cssText = 'color: #FFD700; font-size: 16px; margin-top: 20px;';
+            flashBlocker.appendChild(loadingMsg);
+            document.body.appendChild(flashBlocker);
+
+            // 临时存储原有缩放，保证全像素渲染
+            const originalTransform = targetElement.style.transform;
+            targetElement.classList.remove('poster-preview-scale');
+            targetElement.style.transform = 'none';
+
+            // 稍微延迟保证彻底重排渲染
             setTimeout(() => {
                 html2canvas(targetElement, {
                     scale: 3, // 极高清晰度
@@ -368,6 +397,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     backgroundColor: '#1a3a6c', // 背景色对齐
                     logging: false
                 }).then(canvas => {
+                    // 恢复原布局
+                    targetElement.classList.add('poster-preview-scale');
+                    targetElement.style.transform = originalTransform;
+                    document.body.removeChild(flashBlocker);
+
                     // 转为 base64 图片格式
                     const imgData = canvas.toDataURL("image/png");
 
@@ -410,18 +444,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     loadingText.style.display = 'none';
 
                 }).catch(err => {
+                    // 出错时恢复布局
+                    targetElement.classList.add('poster-preview-scale');
+                    targetElement.style.transform = originalTransform;
+                    if (document.body.contains(flashBlocker)) {
+                        document.body.removeChild(flashBlocker);
+                    }
+
                     console.error("生成海报失败:", err);
                     alert("生成海报失败请重试。");
-
-                    outlinedElements.forEach(el => {
-                        el.classList.remove('temp-no-outline');
-                        el.style.textShadow = "2px 2px 0 #1a1a1a, -2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a";
-                    });
 
                     btnGenerate.style.display = 'inline-block';
                     loadingText.style.display = 'none';
                 });
-            }, 300);
+            }, 100);
         });
     }
 
