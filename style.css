@@ -2711,22 +2711,45 @@ a,
 
 /* === 极繁环境装饰元素 === */
 
-/* 粗重黑边框文字 (超级马里奥风格) */
+/* 粗重黑边框文字 (像素艺术风格) - 仅描边，无阴影偏移 */
 .heavy-outline {
     text-shadow:
-        -2px -2px 0 #1a1a1a,
-        2px -2px 0 #1a1a1a,
-        -2px 2px 0 #1a1a1a,
-        2px 2px 0 #1a1a1a,
-        3px 3px 0 #1a1a1a;
+        1px 1px 0 #1a1a1a,
+        -1px -1px 0 #1a1a1a,
+        1px -1px 0 #1a1a1a,
+        -1px 1px 0 #1a1a1a;
     color: #FFF;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    line-height: 1.8;
 }
 
 .heavy-outline-accent {
     text-shadow:
-        -2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, 4px 4px 0 rgba(0, 0, 0, 0.5);
+        1px 1px 0 #1a1a1a,
+        -1px -1px 0 #1a1a1a,
+        1px -1px 0 #1a1a1a,
+        -1px 1px 0 #1a1a1a;
     color: #FFD700;
+    letter-spacing: 1px;
+}
+
+/* 强调数字专用描边类 */
+.pixel-num-outline {
+    text-shadow:
+        1px 1px 0 #1a1a1a,
+        -1px -1px 0 #1a1a1a,
+        1px -1px 0 #1a1a1a,
+        -1px 1px 0 #1a1a1a;
+    letter-spacing: 1px;
+}
+
+/* 海报渲染专用描边类 */
+.poster-outline {
+    text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000;
 }
 
 /* 粗边框像素盒子 */

@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const targetStr = el.getAttribute('data-target');
                 const target = parseFloat(targetStr);
                 const isFloat = targetStr.includes('.'); // 判断是否需要保留小数
-                const duration = 1500; // 动画时长缩短为 1.5s
+                const duration = parseInt(el.getAttribute('data-duration')) || 1500; // 动画时长，支持自定义，默认 1.5s
 
                 el.innerText = '0';
                 let startTimestamp = null;
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = function (event) {
                     const dataUrl = event.target.result;
                     // 同步到海报主图
                     previewAvatar.src = dataUrl;
@@ -313,8 +313,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
-
     // --- 弹窗控制逻辑 ---
     const btnOpenModal = document.getElementById('btn-open-edit-modal');
     const btnCloseModal = document.getElementById('btn-close-edit-modal');
@@ -323,23 +321,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnOpenModal && posterModal) {
         btnOpenModal.addEventListener('click', () => {
             posterModal.classList.remove('hidden');
-            posterModal.offsetHeight; // 强制重排触发动画
-            posterModal.classList.add('active');
-            if (window.anniversarySwiper) window.anniversarySwiper.allowTouchMove = false;
         });
     }
 
     if (btnCloseModal && posterModal) {
         btnCloseModal.addEventListener('click', () => {
-            posterModal.classList.remove('active');
-            setTimeout(() => {
-                posterModal.classList.add('hidden');
-                if (window.anniversarySwiper) window.anniversarySwiper.allowTouchMove = true;
-            }, 300);
+            posterModal.classList.add('hidden');
         });
     }
 
-    // 3. 点击生成海报按钮
+    // 3. 点击生成按钮
     if (btnGenerate) {
         btnGenerate.addEventListener('click', () => {
             // 防止重复点击
@@ -354,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 html2canvas(targetElement, {
                     scale: 3, // 极高清晰度
                     useCORS: true,
-                    backgroundColor: '#eee', // 背景色对齐
+                    backgroundColor: '#1a3a6c', // 背景色对齐
                     logging: false
                 }).then(canvas => {
                     // 转为 base64 图片格式
@@ -533,7 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let danmakuPool = [];
     let danmakuTimer = null;
-    
+
     // 轨道防重叠：记录每个轨道下一次可用的时间戳
     const laneCount = 12;
     const laneOccupancy = new Array(laneCount).fill(0);
@@ -584,11 +575,11 @@ document.addEventListener("DOMContentLoaded", () => {
             danmakuPool = [...danmakuMessages];
             shuffleArray(danmakuPool);
         }
-        
+
         const msg = danmakuPool.pop(); // 保证不重复
 
         const laneIndex = availableLanes[Math.floor(Math.random() * availableLanes.length)];
-        
+
         // 锁定该轨道一段时间 (例如 3500ms)，避免弹幕重叠
         laneOccupancy[laneIndex] = now + 4000;
 
@@ -598,14 +589,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 使用轨道分布确保均匀 (4% 到 96% 分成 12 个轨道)
         const top = 4 + laneIndex * (92 / (laneCount - 1));
-        
+
         item.style.top = `${top}%`;
         item.style.left = '100%';
         container.appendChild(item);
 
         // 随机速度 (12s - 20s)
         const duration = 12000 + Math.random() * 8000;
-        
+
         const animation = item.animate([
             { left: '100%', transform: 'translateX(0)' },
             { left: '-10%', transform: 'translateX(-100%)' }
