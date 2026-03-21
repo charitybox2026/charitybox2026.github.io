@@ -169,6 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const el = seqElements[idx];
 
             if (el.classList.contains('type-text')) {
+                // 确保打字机元素可见
+                el.style.opacity = '1';
+                el.classList.add('active');
+
                 // 如果还没有备份原始文本，在这里备份并清空
                 if (!el.hasAttribute('data-original-text')) {
                     el.setAttribute('data-original-text', el.textContent.trim());

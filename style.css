@@ -15,8 +15,15 @@
     --font-pixel-zh: 'Fusion Pixel 12px Proportional zh_hans', 'SimSun', '宋体', monospace;
 
     /* 响应式海报缩放 (默认值) */
-    --poster-scale: 0.7;
     --poster-margin: -100px;
+
+    /* 响应式安全区域 (文字显示廊道) */
+    --safe-top: clamp(55px, 10vh, 80px);
+    --safe-bottom: clamp(180px, 32vh, 260px);
+    --safe-height: calc(100% - var(--safe-top) - var(--safe-bottom));
+
+    /* 响应式基础字号：结合视口宽度和高度 */
+    --base-font-size: clamp(14px, 1.8vh + 1vw, 19px);
 }
 
 /* 高度响应式：根据屏幕高度动态调整海报比例 */
@@ -79,6 +86,10 @@
 
     .global-logo-header {
         height: 45px !important;
+    }
+    :root {
+        --logo-safe-area: 50px;
+        --bottom-safe-area: 180px; /* 小屏手机适当压缩底部安全区 */
     }
 }
 
@@ -341,6 +352,65 @@ a,
     box-shadow: 4px 4px 0px var(--color-text);
 }
 
+.content-top-responsive {
+    position: absolute;
+    top: 12%;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.content-top-responsive {
+    position: absolute;
+    top: 12%;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* 全球统一的动态居中内容容器 - 真正意义的响应式容器 */
+.dynamic-content-box {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* 仅水平居中，避免 -50% 纵向平移导致的 Logo 遮挡 */
+    width: 94%;
+    max-width: 500px;
+    top: var(--safe-top);
+    height: var(--safe-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 纵向在安全廊道内居中 */
+    z-index: 10;
+    pointer-events: none;
+    padding: 0 10px;
+}
+
+.dynamic-content-box > * {
+    pointer-events: auto;
+}
+
+.dynamic-content-box p {
+    font-size: var(--base-font-size) !important;
+    line-height: 1.6;
+    margin-bottom: 0.8em; /* 使用相对单位 */
+}
+
+.dynamic-content-box .js-seq {
+    font-size: inherit;
+    /* 核心修复：确保打字机元素初始可见（或通过 JS 激活），或者这里统一设置 */
+    opacity: 1; 
+}
+
+.dynamic-content-box .data-number {
+    font-size: calc(var(--base-font-size) * 1.3) !important;
+}
+
+.dynamic-content-box .narrative-intro {
+    margin-bottom: 1.5vh !important;
+}
+
 /* 模块3：影响力模块的内容区域使用半透明蒙版，去掉默认像素边框 */
 .impact-visualization-module {
     border: none !important;
@@ -375,13 +445,13 @@ a,
 /* 激活状态：透明度恢复，位置恢复 */
 .content.active {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0); /* 保持 translateX(-50%)，取消 translateY(-50%) */
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 模块 2 激活状态 */
+/* 模块 2 激活状态 - 统一逻辑，不再单独覆盖 transform */
 .content.active.narrative-data-module {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 }
 
 /* 滑动提示动画 (箭头) */
@@ -4077,62 +4147,13 @@ a,
         transform: translate(-50%, -50%) scale(1.6) !important;
     }
 
-    /* 内容块字号整体缩小 */
+    /* 内容块字号整体缩小 - 由 .dynamic-content-box 处理 */
     .content h1,
     .content h2 {
         font-size: 16px !important;
     }
 
-    /* 各模块标题 */
-    .impact-visualization-module h2,
-    .community-content h2,
-    .research-module-content h2,
-    .social-module-content h2 {
-        font-size: 18px !important;
-        margin-bottom: 8px !important;
-    }
-
-    /* 故事文字区域 */
-    .narrative-data-module .js-seq,
-    .narrative-data-module p {
-        font-size: 15px !important;
-        min-height: auto !important;
-    }
-
-    /* 模块2数据数字 */
-    .narrative-data-module .data-number {
-        font-size: 16px !important;
-    }
-
-    /* 漂浮卡片宽度 */
-    .floating-card {
-        width: 70% !important;
-        font-size: 12px;
-    }
-
-    .floating-cards {
-        height: 260px !important;
-    }
-
-    /* 社群模块文字 */
-    .community-content .heavy-outline {
-        font-size: 15px !important;
-    }
-
-    .community-content .data-number {
-        font-size: 19px !important;
-    }
-
-    /* 研究/社会曝光模块文字 */
-    .research-module-content p,
-    .social-module-content p {
-        font-size: 14px !important;
-    }
-
-    .research-module-content .data-number,
-    .social-module-content .data-number {
-        font-size: 19px !important;
-    }
+    /* 各模块已统一使用 .dynamic-content-box */
 
     /* 结尾模块 */
     .ending-module .pixel-box {
@@ -4219,7 +4240,8 @@ a,
 
     .research-module-content p,
     .social-module-content p {
-        font-size: 18px !important;
+        font-size: 16px !important;
+        margin-bottom: 10px !important;
     }
 }
 

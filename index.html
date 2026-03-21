@@ -65,10 +65,10 @@
                 <img src="assets/cake.png" alt="Anniversary Cake"
                     style="z-index: 6; position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); height: 480px; width: auto; image-rendering: pixelated;">
 
-                <div class="content hidden"
-                    style="position: absolute; top: 12%; left: 50%; width: 90%; max-width: 400px; margin-top: 0; border: none; background: transparent; box-shadow: none; z-index: 10;">
-                    <h1 class="heavy-outline-accent" style="font-size: 19px;">1%捐赠承诺两岁啦！</h1>
-                    <p class="pixel-en heavy-outline" style="font-size: 16px; margin: 15px 0;">2nd Anniversary</p>
+                <div class="content hidden dynamic-content-box"
+                    style="background: transparent; border: none; box-shadow: none;">
+                    <h1 class="heavy-outline-accent">1%捐赠承诺两岁啦！</h1>
+                    <p class="pixel-en heavy-outline">2nd Anniversary</p>
                 </div>
 
                 <div class="scroll-hint hidden" style="position: absolute; bottom: 15%; z-index: 20;">
@@ -249,61 +249,49 @@
                     </div>
                 </div>
 
-                <div class="content hidden narrative-data-module"
-                    style="position: absolute; top: 40%; left: 50%; width: 90%; max-width: 400px; padding: 0; background: transparent; border: none; box-shadow: none; z-index: 10;">
+                <div class="content hidden narrative-data-module dynamic-content-box" style="background: transparent; border: none; box-shadow: none;">
 
                     <!-- 叙事引入 -->
-                    <div class="narrative-intro" style="margin-bottom: 25px; text-align: left;">
-                        <p class="heavy-outline"
-                            style="font-size: 19px; line-height: 1.6; color: #fff; font-weight: bold; margin-bottom: 12px; min-height: 32px;">
+                    <div class="narrative-intro" style="text-align: left;">
+                        <p class="heavy-outline" style="font-weight: bold;">
                             <span class="js-seq type-text">2024年3月21日，1%捐赠承诺正式发布。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; line-height: 1.6; color: #fff; font-weight: bold; margin-bottom: 12px; min-height: 64px;">
-                            <span class="js-seq type-fade">两年时间里，一份份承诺被认真写下，一次次捐赠真实发生。</span>
+                        <p class="heavy-outline" style="font-weight: bold;">
+                            <span class="js-seq type-text">两年时间里，一份份承诺被认真写下，一次次捐赠真实发生。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; line-height: 1.6; color: #fff; font-weight: bold; margin-bottom: 0; min-height: 64px;">
-                            <span class="js-seq type-fade">因为有人持续相信，小小的1%，就慢慢汇成了可以托住很多人的力量。</span>
+                        <p class="heavy-outline" style="font-weight: bold; margin-bottom: 0;">
+                            <span class="js-seq type-text">因为有人持续相信，小小的1%，就慢慢汇成了可以托住很多人的力量。</span>
                         </p>
                     </div>
 
                     <!-- 核心数据区块 (开放式背景) -->
-                    <div style="margin-bottom: 20px; text-align: center;">
-                        <p class="heavy-outline"
-                            style="font-size: 16px; margin-bottom: 15px; color: #fff; font-weight: bold; min-height: 24px;">
+                    <div class="narrative-data-stats" style="margin: 1.5vh 0; text-align: center;">
+                        <p class="heavy-outline" style="font-weight: bold;">
                             <span class="js-seq type-text">- 截止2026年3月21日，1%捐赠承诺已达成 -</span>
                         </p>
 
-                        <div
-                            style="margin-bottom: 10px; display: flex; align-items: baseline; flex-wrap: wrap; justify-content: center;">
-                            <span class="js-seq type-text heavy-outline"
-                                style="font-size: 16px; color: #fff; font-weight: bold;">签订承诺伙伴：</span>
+                        <div style="margin-bottom: 5px; display: flex; align-items: baseline; flex-wrap: wrap; justify-content: center;">
+                            <span class="js-seq type-text heavy-outline" style="font-weight: bold;">签订承诺伙伴：</span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="1332"
-                                style="font-size: 19px; color: #FFD700; margin: 0 5px; opacity: 0; transition: opacity 0.5s;">0</span>
-                            <span class="js-seq type-text heavy-outline"
-                                style="font-size: 16px; color: #fff; font-weight: bold;">名</span>
+                                style="color: #FFD700; margin: 0 5px; opacity: 0; transition: opacity 0.5s;">0</span>
+                            <span class="js-seq type-text heavy-outline" style="font-weight: bold;">名</span>
                         </div>
 
                         <div style="display: flex; align-items: baseline; flex-wrap: wrap; justify-content: center;">
-                            <span class="js-seq type-text heavy-outline"
-                                style="font-size: 16px; color: #fff; font-weight: bold;">总筹款金额：</span>
+                            <span class="js-seq type-text heavy-outline" style="font-weight: bold;">总筹款金额：</span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline"
                                 data-target="2152944.01"
-                                style="font-size: 19px; color: #FFD700; margin: 0 5px; opacity: 0; transition: opacity 0.5s;">0</span>
-                            <span class="js-seq type-text heavy-outline"
-                                style="font-size: 16px; color: #fff; font-weight: bold;">元</span>
+                                style="color: #FFD700; margin: 0 5px; opacity: 0; transition: opacity 0.5s;">0</span>
+                            <span class="js-seq type-text heavy-outline" style="font-weight: bold;">元</span>
                         </div>
                     </div>
 
                     <!-- 结语 -->
-                    <div style="text-align: left; margin-top: 25px;">
-                        <p class="heavy-outline"
-                            style="font-size: 19px; line-height: 1.6; margin-bottom: 8px; color: #fff; font-weight: bold; min-height: 32px;">
+                    <div class="narrative-footer" style="text-align: left;">
+                        <p class="heavy-outline" style="font-weight: bold; margin-bottom: 4px;">
                             <span class="js-seq type-text">谢谢你把“我愿意”，</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; line-height: 1.6; margin: 0; color: #fff; font-weight: bold; min-height: 32px;">
+                        <p class="heavy-outline" style="font-weight: bold; margin: 0;">
                             <span class="js-seq type-text">变成了“我们一起”。</span>
                         </p>
                     </div>
@@ -321,15 +309,14 @@
 
                 <div class="pixel-brick-floor" style="z-index: 1;"></div>
 
-                <div class="content hidden impact-visualization-module"
-                    style="position: absolute; top: 9%; width: 90%; left: 50%; z-index: 10; pointer-events: none; background: none;">
-
+                <div class="content hidden impact-visualization-module dynamic-content-box"
+                    style="pointer-events: none; background: none;">
                     <div class="narrative-body" style="text-align: left; margin-bottom: 15px;">
                         <p class="js-seq type-text heavy-outline"
-                            style="font-size: 17px; color: #fff; line-height: 1.5; margin-bottom: 10px; min-height: 26px;">
+                            style="line-height: 1.5; margin-bottom: 10px; min-height: 26px;">
                             在过去的两年里，我们的推荐项目切实做到了：</p>
                     </div>
-                    <div class="floating-cards" style="position: relative; height: 300px; margin-bottom: 15px;">
+                    <div class="floating-cards" style="position: relative; height: 300px; margin-bottom: 15px; width: 100%;">
                         <div class="js-seq type-fade floating-card card-1"
                             style="position: absolute; top: 0; left: 0; width: 60%; opacity: 0; transition: opacity 0.5s; pointer-events: auto;"
                             data-org="上海新奥光明公益基金会" data-title="帮助白内障老人完成手术" data-impact-text="为一个个的家庭带来了光明"
@@ -469,12 +456,11 @@
                 <div class="pixel-star" style="top:20%; right:20%; animation-delay: 0.8s;"></div>
                 <div class="pixel-brick-floor" style="z-index: 1;"></div>
 
-                <div class="content hidden community-content"
-                    style="position: absolute; top: 12%; width: 92%; left: 50%; z-index: 10; pointer-events: none; background: none; border: none; box-shadow: none;">
+                <div class="content hidden community-content dynamic-content-box"
+                    style="pointer-events: none; background: none; border: none; box-shadow: none;">
                     <div class="narrative-body" style="text-align: left; margin-bottom: 25px;">
                         <!-- 第一段（含一个跳动数字和换行） -->
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.8; margin-bottom: 15px;">
+                        <p class="heavy-outline" style="line-height: 1.8; margin-bottom: 15px;">
                             <span class="js-seq type-text">两年来，</span><br>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="905"
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
@@ -625,15 +611,12 @@
                 <div class="pixel-cloud c-small float-anim" style="top:5%; left:10%; z-index: 1;"></div>
                 <div class="pixel-star" style="top:8%; right:15%;"></div>
 
-                <div class="content hidden research-module-content"
-                    style="position: absolute; top: 12%; width: 90%; left: 50%; z-index: 10;">
+                <div class="content hidden research-module-content dynamic-content-box">
                     <div class="narrative-body" style="text-align: left; margin-bottom: 25px;">
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px; min-height: 32px;">
+                        <p class="heavy-outline" style="min-height: 32px;">
                             <span class="js-seq type-text">为了更认真地回答“善意该去向哪里”，</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 15px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">我们累计完成了超过 </span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="500"
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
@@ -645,8 +628,7 @@
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
                             <span class="js-seq type-text"> 个项目点。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">基于这些查证、倾听与抵达，我们产出了 </span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="4" data-duration="600"
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
@@ -655,8 +637,7 @@
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
                             <span class="js-seq type-text"> 字，努力把“捐到哪里”讲得更清楚一些。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 20px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="22" data-duration="600"
                                 style="color: #FFD700; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
                             <span class="js-seq type-text"> 期月报，每月准时到达，把每一次进展认真说给你听。</span>
@@ -664,12 +645,10 @@
                     </div>
 
                     <div class="narrative-footer" style="text-align: left;">
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px; font-style: italic; opacity: 0.8;">
+                        <p class="heavy-outline" style="font-style: italic; opacity: 0.8;">
                             <span class="js-seq type-text">每一份捐赠分配建议的背后，都不是轻易得出的结论，而是一点点认真走近真实需求的过程。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #FFD700; font-weight: bold; line-height: 1.6;">
+                        <p class="heavy-outline" style="color: #FFD700; font-weight: bold;">
                             <span class="js-seq type-text">谢谢你，让善意不仅被送出，也被认真地安放。</span>
                         </p>
                     </div>
@@ -694,30 +673,25 @@
                 <div class="pixel-cloud c-large float-anim" style="top:3%; right:5%; z-index: 1;"></div>
                 <div class="pixel-star" style="top:10%; left:8%;"></div>
 
-                <div class="content hidden social-module-content"
-                    style="position: absolute; top: 15%; width: 90%; left: 50%; z-index: 10;">
+                <div class="content hidden social-module-content dynamic-content-box">
 
                     <div class="narrative-body" style="text-align: left; margin-bottom: 15px;">
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">在过去2年间，1%捐赠承诺走进更多人的视野。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">在公众号、播客、小红书等平台，1%捐赠承诺的累计曝光超 </span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="36.5" data-duration="600"
                                 style="color: #FF9500; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
                             <span class="js-seq type-text">万人次；</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">累计有 </span>
                             <span class="js-seq type-fade pixel-en data-number pixel-num-outline" data-target="6517"
                                 style="color: #FF9500; font-size: 26px; font-weight: bold; font-family: 'Pixel-Number', sans-serif; margin: 0 4px; opacity: 0; transition: opacity 0.5s;">0</span>
                             <span class="js-seq type-text">位朋友打开百一捐赠承诺小程序，走近这份公益承诺。</span>
                         </p>
-                        <p class="heavy-outline"
-                            style="font-size: 19px; color: #fff; line-height: 1.6; margin-bottom: 12px;">
+                        <p class="heavy-outline">
                             <span class="js-seq type-text">1%的故事也被 </span>
                             <span class="js-seq type-fade"><a href="https://mp.weixin.qq.com/s/2Vp9RvXRPWHlRomoX-i4tw" target="_blank" class="pixel-link">一席</a></span>
                             <span class="js-seq type-text">、</span>
