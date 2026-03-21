@@ -352,12 +352,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnOpenModal && posterModal) {
         btnOpenModal.addEventListener('click', () => {
             posterModal.classList.remove('hidden');
+            void posterModal.offsetWidth; // 触发重绘
+            posterModal.classList.add('active');
         });
     }
 
     if (btnCloseModal && posterModal) {
         btnCloseModal.addEventListener('click', () => {
-            posterModal.classList.add('hidden');
+            posterModal.classList.remove('active');
+            setTimeout(() => {
+                posterModal.classList.add('hidden');
+            }, 300);
         });
     }
 
