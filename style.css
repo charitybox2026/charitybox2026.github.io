@@ -2342,7 +2342,8 @@ a,
     /* 浅绿背景 */
     border: 3px solid #1a1a1a;
     /* 回归深色边框 */
-    padding: 6px 10px;
+    padding: 5px 8px;
+    line-height: 1.1;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
     text-align: left;
     opacity: 0;
@@ -2387,7 +2388,7 @@ a,
 
 .floating-card .card-title {
     font-size: 11px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     color: #22543d;
     font-weight: bold;
 }
