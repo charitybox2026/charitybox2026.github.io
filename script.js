@@ -26,6 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const musicBtn = document.getElementById('music-toggle');
     let isBgmPlaying = false;
 
+    // 自动跳过前3秒的空白前奏（包括首次播放和单曲循环时）
+    bgm.addEventListener('timeupdate', () => {
+        if (bgm.currentTime < 3) {
+            bgm.currentTime = 3;
+        }
+    });
+
     // 为了兼容浏览器的 Autoplay 政策，监听第一次用户交互来播放音乐
     const initMusic = () => {
         if (!isBgmPlaying) {
@@ -201,11 +208,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // 如果是数字，等待数字滚动完成后再继续
                 if (el.classList.contains('data-number')) {
-                    await animateNumbers([el]);
-                    setTimeout(() => {
-                        idx++;
-                        next();
-                    }, 100); // 极小延迟无缝接续打字
+                    if (el.hasAttribute('data-async')) {
+                        // 不阻塞后续打字，数字跳动并行执行
+                        animateNumbers([el]);
+                        setTimeout(() => {
+                            idx++;
+                            next();
+                        }, 50); // 极小延迟无缝接续打字
+                    } else {
+                        await animateNumbers([el]);
+                        setTimeout(() => {
+                            idx++;
+                            next();
+                        }, 100); // 极小延迟无缝接续打字
+                    }
                 } else {
                     setTimeout(() => {
                         idx++;
@@ -252,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const formatNum = (num, floatFlag) => {
                         return floatFlag
                             ? num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            : Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     };
 
                     if (progress < 1) {

@@ -381,14 +381,30 @@ a,
     height: var(--safe-height);
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 纵向在安全廊道内居中 */
+    justify-content: flex-start; /* 改为 flex-start 配合内部元素的 auto margin，防止溢出时顶部被裁切 */
     z-index: 10;
     pointer-events: none;
     padding: 0 10px;
 }
 
+/* 内部元素默认垂直居中，但如果高度超出则贴顶 */
 .dynamic-content-box > * {
     pointer-events: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* 动态长文本的滚动安全区 */
+.scrollable-content {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px; /* 防裁切 */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.scrollable-content::-webkit-scrollbar {
+    display: none;
 }
 
 .dynamic-content-box p {
